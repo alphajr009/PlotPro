@@ -1,0 +1,11 @@
+.header-fertilizer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-fertilizer-container{
+    margin-bottom: 20px;
+    padding: 20px 90px 0px 90px;
+}
