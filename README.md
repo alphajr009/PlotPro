@@ -150,5 +150,5 @@ PlotPro follows a **MERN** architecture, ensuring a seamless and scalable enviro
  - Share templates and collaborate with team members or agronomists.
  - Access support through in-app chat and help resources.
 
-For any further assistance or inquiries, feel free to contact the development team at pasidurandika35@gmail.com
+For any further assistance or inquiries, feel free to contact the development team at pasindurandika35@gmail.com
    
