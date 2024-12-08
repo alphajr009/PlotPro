@@ -1,6 +1,6 @@
 # PlotPro: Comprehensive Agricultural Land Management Tool
 
-![PlotPro Logo](https://i.imgur.com/sCRfQEy.png
+![PlotPro Logo](https://i.imgur.com/fCZOBk3.png
 )
 
 ## Project Overview
@@ -78,7 +78,7 @@
 
 ## Architecture
 
-![Architecture Diagram](![image](https://github.com/user-attachments/assets/96364bd1-a11b-4d50-9c7a-2d7195a64310)
+![Architecture Diagram](https://i.imgur.com/sCRfQEy.png
 )
 
 PlotPro follows a **MERN** architecture, ensuring a seamless and scalable environment for both mobile and web applications. The backend manages data storage, API endpoints, and business logic, while the frontend provides an intuitive user interface. Machine learning models are integrated into the backend to process and analyze data, delivering actionable insights to users.
