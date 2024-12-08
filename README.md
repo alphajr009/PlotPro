@@ -1,6 +1,6 @@
 # PlotPro: Comprehensive Agricultural Land Management Tool
 
-![PlotPro Logo](![image](https://github.com/user-attachments/assets/24279a9b-8869-4cd3-a8f8-fce9bbbbaf88)
+![PlotPro Logo](https://i.imgur.com/sCRfQEy.png
 )
 
 ## Project Overview
