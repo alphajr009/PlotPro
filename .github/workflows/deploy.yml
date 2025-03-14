@@ -1,0 +1,44 @@
+name: Deploy Node.js App to Hostinger
+
+# Trigger the workflow on push to the main branch
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Runs on the latest Ubuntu version
+
+    steps:
+      # Check out the code from the GitHub repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Node.js (ensure version matches the version used in your project)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Use the version that matches your project
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Set up MongoDB URI and other environment variables from GitHub Secrets
+      - name: Set up environment variables
+        run: |
+          echo "PORT=5000" >> $GITHUB_ENV
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+
+      # Deploy to Hostinger via FTP
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          protocol: ftp
+          server: ${{ secrets.FTP_HOST }}  # FTP host from GitHub Secrets
+          username: ${{ secrets.FTP_USERNAME }}  # FTP username from GitHub Secrets
+          password: ${{ secrets.FTP_PASSWORD }}  # FTP password from GitHub Secrets
+          port: ${{ secrets.FTP_PORT }}  # FTP port (default 21)
+          local-dir: ./WebApp/Backend/   # Path to the local directory to deploy 
+          server-dir: /public_html/  # The target directory on Hostinger 
