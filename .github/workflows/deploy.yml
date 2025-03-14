@@ -41,4 +41,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}  # FTP password from GitHub Secrets
           port: ${{ secrets.FTP_PORT }}  # FTP port (default 21)
           local-dir: ./WebApp/Backend/   # Path to the local directory to deploy 
-          server-dir: /public_html/  # The target directory on Hostinger 
+          server-dir: /public_html/PlotPro/  # The target directory on Hostinger 
