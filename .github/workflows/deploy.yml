@@ -38,4 +38,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}  
           port: ${{ secrets.FTP_PORT }}  
           local-dir: ./WebApp/Backend/   # Path to the local directory to deploy 
-          server-dir: /public_html/PlotPro/  # The target directory on Hostinger 
+          server-dir: /public_html/  # The target directory on Hostinger 
