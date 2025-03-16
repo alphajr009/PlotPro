@@ -104,13 +104,13 @@ export default function MeasurePointScreen() {
         setMapRegion({
           latitude: userLocation.coords.latitude,
           longitude: userLocation.coords.longitude,
-          latitudeDelta: 0.001, // More zoomed in for initial location
+          latitudeDelta: 0.001, 
           longitudeDelta: 0.001,
         });
-        setLoading(false); // Hide loading spinner after fetching location
+        setLoading(false); 
       } else {
         Alert.alert('Permission Denied', 'Location permission is required.');
-        setLoading(false); // Hide loading spinner in case of an error
+        setLoading(false); 
       }
     };
 
@@ -118,12 +118,12 @@ export default function MeasurePointScreen() {
       const userData = await AsyncStorage.getItem('user');
       if (userData) {
         const user = JSON.parse(userData);
-        setUserId(user._id); // Set userId from the stored user data
+        setUserId(user._id); 
       }
     };
 
     getLocation();
-    loadUser(); // Load user data on component mount
+    loadUser(); 
   }, []);
 
   // Handle point selection on the map
@@ -156,18 +156,16 @@ export default function MeasurePointScreen() {
     setIsBackButtonPressed(true); // Set back button pressed state to true
     setIsMapDisabled(true); // Disable map interaction immediately
 
-    setPoints((prevPoints) => prevPoints.slice(0, prevPoints.length - 1)); // Remove last point
+    setPoints((prevPoints) => prevPoints.slice(0, prevPoints.length - 1));
     setArea(0);
     setPerimeter(0);
 
-    // Re-enable map interaction after a short delay (e.g., 1 second)
     setTimeout(() => {
       setIsMapDisabled(false); // Enable map interaction again
       setIsBackButtonPressed(false); // Reset back button state
-    }, 1000); // 1-second delay
+    }, 1000); 
   };
 
-  // Save the field data to the server
   const handleSave = async () => {
     if (!userId) {
       Alert.alert("Error", "User ID is missing");
@@ -175,7 +173,7 @@ export default function MeasurePointScreen() {
     }
 
     const fieldData = {
-      userId,
+      userId, // Send the userId as it is, no need to convert to ObjectId
       points,
       area,
       perimeter,
@@ -183,6 +181,8 @@ export default function MeasurePointScreen() {
 
     try {
       const API_BASE_URL = 'https://plot-pro.vercel.app/api';
+      console.log('Saving data:', fieldData); // Log the data to be sent
+
       const response = await fetch(`${API_BASE_URL}/fields/save`, {
         method: 'POST',
         headers: {
@@ -193,13 +193,14 @@ export default function MeasurePointScreen() {
 
       const data = await response.json();
       if (!response.ok) {
+        console.error('Error response:', data); // Log the error response for debugging
         throw new Error(data.error || 'Failed to save field data');
       }
 
       Alert.alert('Success', 'Field data saved successfully!');
-      router.push('/(tabs)/measure'); // Navigate back to the measure screen
+      router.push('/(tabs)/measure');
     } catch (error) {
-      console.error('Error saving field data:', error);
+      console.error('Error saving field data:', error); // Detailed error logging
       Alert.alert('Error', 'Failed to save field data.');
     }
   };
@@ -373,4 +374,3 @@ const styles = StyleSheet.create({
     color: '#2793e7',
   },
 });
-
