@@ -1,33 +1,43 @@
 import React from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from 'react-native-vector-icons';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome!</Text>
-      <Text style={styles.subtitle}>Sign in to continue</Text>
-      
-      <TextInput style={styles.input} placeholder="email" />
-      <TextInput style={styles.input} placeholder="password" secureTextEntry />
+      <Text style={styles.title}>Home</Text>
 
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
+      <View style={styles.tabContainer}>
+        <Ionicons name="ruler" size={30} color="#0066ff" />
+        <Text style={styles.tabText}>Measure</Text>
+      </View>
 
-      <Text style={styles.link}>Forgot Password?</Text>
-      
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
-        <Text>Don't have an account? </Text>
-        <TouchableOpacity><Text style={{ color: 'blue' }}>Sign Up</Text></TouchableOpacity>
+      <View style={styles.tabContainer}>
+        <Ionicons name="ios-home" size={30} color="#0066ff" />
+        <Text style={styles.tabText}>Fields</Text>
+      </View>
+
+      <View style={styles.tabContainer}>
+        <Ionicons name="ios-briefcase" size={30} color="#0066ff" />
+        <Text style={styles.tabText}>Work</Text>
+      </View>
+
+      <View style={styles.tabContainer}>
+        <Ionicons name="ios-bar-chart" size={30} color="#0066ff" />
+        <Text style={styles.tabText}>Insights</Text>
+      </View>
+
+      <View style={styles.tabContainer}>
+        <Ionicons name="ios-person" size={30} color="#0066ff" />
+        <Text style={styles.tabText}>Profile</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: 'center' },
-  welcome: { fontSize: 32, fontWeight: 'bold' },
-  subtitle: { fontSize: 16, marginBottom: 20 },
-  input: { backgroundColor: '#fff', padding: 10, borderRadius: 8, marginVertical: 8 },
-  loginButton: { backgroundColor: '#0066ff', padding: 15, borderRadius: 8, alignItems: 'center' },
+  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  title: { fontSize: 32, fontWeight: 'bold', textAlign: 'center' },
+  tabContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 20 },
+  tabText: { fontSize: 18, marginLeft: 10 },
 });

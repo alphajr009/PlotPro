@@ -82,7 +82,24 @@ router.post("/getuserbyid", async (req, res) => {
   }
 });
 
+router.patch("/update", async (req, res) => {
+  const { name, email, _id } = req.body;
 
+  try {
+    const user = await User.findById(_id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    return res.status(400).json({ error: "Unable to update profile" });
+  }
+});
 
 router.post("/changepasswordOtp", async (req, res) => {
   const { email, newPassword } = req.body;

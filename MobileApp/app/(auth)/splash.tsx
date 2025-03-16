@@ -7,18 +7,20 @@ export default function SplashScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    const checkFirstLaunch = async () => {
-      const alreadyLaunched = await AsyncStorage.getItem('firstLaunch');
+    const checkUserLogin = async () => {
+      const userData = await AsyncStorage.getItem('user');
 
-      if (alreadyLaunched === 'true') {
-        router.replace('/(auth)/register'); // Skip setup if launched before
+      if (userData) {
+        // If user data exists, redirect to the home screen
+        router.replace('/(tabs)/home');
       } else {
-        router.replace('/(auth)/agreement'); // Go to Agreement first time
+        // If no user data, redirect to login screen
+        router.replace('/(auth)/login');
       }
     };
 
     setTimeout(() => {
-      checkFirstLaunch();
+      checkUserLogin();
     }, 800);
   }, []);
 

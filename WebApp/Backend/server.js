@@ -33,14 +33,11 @@ app.use(express.json());
 app.use("/api/users", userRoute);
 
 
+const port = process.env.PORT || 5000;
+
+
 app.get("/", (req, res) => {
   res.send("<h3>Server Running</h3>");
 });
-
-const port = process.env.PORT || 5000;
-
-if (process.env.NODE_ENV == "production") {
-  app.use(express.static("client/build"));
-}
 
 app.listen(port, () => console.log("Node Server Started using Nodemon!"));
