@@ -9,6 +9,7 @@ const app = express();
 
 const dbconfig = require("./db");
 const userRoute = require("./routes/usersRoute");
+const fieldRoute = require("./routes/fieldRoute");
 
 app.use(helmet());
 app.use(cors());
@@ -31,6 +32,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 
 app.use("/api/users", userRoute);
+app.use("/api/fields", fieldRoute);
 
 
 const port = process.env.PORT || 5000;

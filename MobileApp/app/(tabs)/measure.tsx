@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, Alert, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location'; 
 import { useRouter } from 'expo-router';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLocationArrow, faLayerGroup } from '@fortawesome/free-solid-svg-icons'; 
-import { GOOGLE_MAP_API } from '../config/config';
 import { usePermissions } from '../../hooks/usePermissions'; 
+
+const { height } = Dimensions.get('window');
 
 export default function MeasureScreen() {
   const router = useRouter();
-  const { checkPermissions, requestAllPermissions } = usePermissions();  // Destructure the functions from the hook
+  const { checkPermissions, requestAllPermissions } = usePermissions(); 
 
   const [location, setLocation] = useState<any>(null);
   const [mapRegion, setMapRegion] = useState({
@@ -22,6 +22,7 @@ export default function MeasureScreen() {
   const [mapType, setMapType] = useState<string>('satellite'); 
   const [modalVisible, setModalVisible] = useState<boolean>(false); 
   const [searchQuery, setSearchQuery] = useState<string>(''); 
+  const [measureMenuVisible, setMeasureMenuVisible] = useState<boolean>(false); // For slide-up menu
 
   // Get current location
   useEffect(() => {
@@ -58,7 +59,6 @@ export default function MeasureScreen() {
   const handleLocationButtonPress = async () => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions && location) {
-
       setMapRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -73,6 +73,16 @@ export default function MeasureScreen() {
   const changeMapType = (type: string) => {
     setMapType(type);
     setModalVisible(false); 
+  };
+
+  const toggleMeasureMenu = () => {
+    setMeasureMenuVisible(!measureMenuVisible);
+  };
+
+  const handleMeasureOption = (option: string) => {
+    if (option === 'Point on Map') {
+      router.push('/screens/measure/measurepoint'); // Navigate to MeasurePointScreen
+    }
   };
 
   return (
@@ -106,18 +116,38 @@ export default function MeasureScreen() {
         style={styles.layerButton}
         onPress={() => setModalVisible(true)}
       >
-        <FontAwesomeIcon icon={faLayerGroup} size={20} color="#fff" />
+        <Icon name="map" size={20} color="#fff" />
       </TouchableOpacity>
 
       {/* Start Measure Button */}
-      <TouchableOpacity style={styles.startMeasureButton} onPress={() => router.push('/(tabs)/measure/measure-screen1')}>
+      <TouchableOpacity style={styles.startMeasureButton} onPress={toggleMeasureMenu}>
         <Text style={styles.startMeasureText}>Start Measure</Text>
       </TouchableOpacity>
 
       {/* Current Location Button */}
       <TouchableOpacity style={styles.locationButton} onPress={handleLocationButtonPress}>
-        <FontAwesomeIcon icon={faLocationArrow} size={30} color="#fff" />
+        <Icon name="location-arrow" size={30} color="#fff" />
       </TouchableOpacity>
+
+      {/* Measure Slide-up Menu */}
+      {measureMenuVisible && (
+        <View style={styles.measureMenu}>
+          <TouchableOpacity style={styles.measureOption} onPress={() => handleMeasureOption('Walk Around the Map')}>
+            <Text style={styles.measureOptionText}>Walk Around the Map</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.measureOption} onPress={() => handleMeasureOption('Point on Map')}>
+            <Text style={styles.measureOptionText}>Point on Map</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.measureOption} onPress={() => handleMeasureOption('Upload Shape File')}>
+            <Text style={styles.measureOptionText}>Upload Shape File</Text>
+          </TouchableOpacity>
+
+          {/* Close Button */}
+          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleMeasureMenu}>
+            <Text style={styles.modalButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Map Type Selection Modal */}
       <Modal
@@ -224,6 +254,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2, 
+  },
+  measureMenu: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#2793e7',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    zIndex: 2,
+  },
+  measureOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
+  },
+  measureOptionText: {
+    color: '#fff',
+    fontSize: 16,
+    marginLeft: 10,
   },
   modalBackground: {
     flex: 1,
