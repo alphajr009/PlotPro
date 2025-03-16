@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { API_BASE_URL } from '../config/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '../config/config';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -20,11 +20,11 @@ export default function LoginScreen() {
       const result = await response.json();
 
       if (response.ok) {
-        // Save the user data to AsyncStorage
+        // Save user data to AsyncStorage
         await AsyncStorage.setItem('user', JSON.stringify(result));
 
-        // Redirect to the home screen or main screen
-        router.replace('/(tabs)/home');
+        // Redirect to the profile screen
+        router.replace('/(tabs)/profile');
       } else {
         Alert.alert("Error", result.message || "Login failed.");
       }
@@ -34,32 +34,29 @@ export default function LoginScreen() {
   };
 
   return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-      <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
 
-        <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
-        <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <View style={styles.linkContainer}>
+        <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
+          <Text style={styles.link}>Forgot Password?</Text>
         </TouchableOpacity>
-
-        <View style={styles.linkContainer}>
-          <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
-            <Text style={styles.link}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.linkContainer}>
-          <Text style={styles.link}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-            <Text style={styles.linkButton}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
-    </>
+
+      <View style={styles.linkContainer}>
+        <Text style={styles.link}>Don't have an account?</Text>
+        <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
+          <Text style={styles.linkButton}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
