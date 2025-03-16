@@ -3,14 +3,16 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Field = require('../models/field');
 
+
 router.post('/save', async (req, res) => {
   const { userId, points, area, perimeter } = req.body;
 
   try {
-    const userObjectId = mongoose.Types.ObjectId(userId);
+
+    const userObjectId = mongoose.Types.ObjectId(userId); 
 
     const newField = new Field({
-      userId: userObjectId, // Store the userId as an ObjectId
+      userId: userObjectId, 
       points,
       area,
       perimeter,
@@ -23,6 +25,7 @@ router.post('/save', async (req, res) => {
     res.status(400).json({ error: 'Failed to save field' });
   }
 });
+
 
 router.get('/getFieldsByUser/:userId', async (req, res) => {
   try {
