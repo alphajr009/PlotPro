@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Dimensions, ActivityIndicator, Modal, TextInput } from 'react-native';
 import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Location from 'expo-location';
@@ -91,8 +91,12 @@ export default function MeasurePointScreen() {
   });
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [userId, setUserId] = useState<string | null>(null); // State to store userId
+  const [fieldName, setFieldName] = useState<string>(''); // Field name state
+  const [showModal, setShowModal] = useState<boolean>(false); // Modal visibility state
+  const [showPartitionQuestion, setShowPartitionQuestion] = useState<boolean>(false); // Partition question visibility
   const [isBackButtonPressed, setIsBackButtonPressed] = useState(false); // Track back button state
   const [isMapDisabled, setIsMapDisabled] = useState(false); // State to control map interaction
+  const [fieldId, setFieldId] = useState<string | null>(null); // State to store fieldId
 
   // Get current location on load and set region to zoom in on it
   useEffect(() => {
@@ -174,6 +178,7 @@ export default function MeasurePointScreen() {
 
     const fieldData = {
       userId, // Send the userId as it is, no need to convert to ObjectId
+      name: fieldName, // Send the field name
       points,
       area,
       perimeter,
@@ -198,12 +203,29 @@ export default function MeasurePointScreen() {
       }
 
       Alert.alert('Success', 'Field data saved successfully!');
-      router.push('/(tabs)/measure');
+      setFieldId(data._id); // Save the fieldId from the response
+      setShowModal(false); // Close the modal
+
+      setShowPartitionQuestion(true); // Ask if the user wants to partition
+
     } catch (error) {
       console.error('Error saving field data:', error); // Detailed error logging
       Alert.alert('Error', 'Failed to save field data.');
     }
   };
+
+  const handlePartitionResponse = (response: string) => {
+    setShowPartitionQuestion(false);
+    if (response === 'Yes') {
+      // Navigate to partition screen and pass fieldId and fieldName as query params
+      router.push({
+        pathname: '/screens/measure/partition',
+        query: { fieldId, fieldName },
+      });
+    }
+  };
+  
+  
 
   // Cancel the current process and go back
   const handleCancel = () => {
@@ -257,11 +279,49 @@ export default function MeasurePointScreen() {
 
           {/* Save and Cancel Buttons */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => setShowModal(true)}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
               <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      {/* Modal for entering field name */}
+      <Modal visible={showModal} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Enter Field Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Field Name"
+              value={fieldName}
+              onChangeText={setFieldName}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => setShowModal(false)}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Partition question */}
+      {showPartitionQuestion && (
+        <View style={styles.partitionQuestionContainer}>
+          <Text style={styles.partitionQuestionText}>Do you need to partition?</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => handlePartitionResponse('Yes')}>
+              <Text style={styles.buttonText}>Yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => handlePartitionResponse('No')}>
+              <Text style={styles.buttonText}>No</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -273,19 +333,6 @@ export default function MeasurePointScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
-  footer: {
-    padding: 20,
-    backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-  },
-  text: {
-    fontSize: 16,
-    color: '#333',
-  },
   topDisplay: {
     position: 'absolute',
     top: 30,
@@ -310,14 +357,14 @@ const styles = StyleSheet.create({
   circleText: {
     color: '#fff',
     fontSize: 12,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   measureMenu: {
     position: 'absolute',
-    bottom: 45, 
+    bottom: 45,
     left: 10,
     right: 10,
-    zIndex: 3, 
+    zIndex: 3,
   },
   backButton: {
     position: 'absolute',
@@ -331,7 +378,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   curvedArrowIcon: {
-    color: '#2793e7'
+    color: '#2793e7',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -348,7 +395,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   cancelButton: {
-    backgroundColor: '#FF6347', 
+    backgroundColor: '#FF6347',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -372,5 +419,50 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 18,
     color: '#2793e7',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  partitionQuestionContainer: {
+    position: 'absolute',
+    bottom: 100,
+    left: 10,
+    right: 10,
+    zIndex: 4,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+  },
+  partitionQuestionText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
   },
 });
