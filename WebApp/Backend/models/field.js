@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const fieldSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  name: { type: String, required: true },  // New field for field name
+  name: { type: String, required: true },  
   points: [{
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true }
