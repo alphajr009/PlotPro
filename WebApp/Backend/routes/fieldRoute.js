@@ -8,11 +8,11 @@ router.post('/save', async (req, res) => {
   const { userId, name, points, area, perimeter } = req.body;
 
   try {
-    const userObjectId = new mongoose.Types.ObjectId(userId); // Correct instantiation of ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId); 
 
     const newField = new Field({
       userId: userObjectId,
-      name, // Add the name field
+      name,
       points,
       area,
       perimeter,

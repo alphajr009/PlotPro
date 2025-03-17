@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function PartitionScreen() {
   const [fieldId, setFieldId] = useState<string | null>(null);
   const [fieldName, setFieldName] = useState<string>('');
-  const [fieldDetails, setFieldDetails] = useState<any>(null); // State to hold field details
+  const [fieldDetails, setFieldDetails] = useState<any>(null); 
 
   useEffect(() => {
     const fetchFieldData = async () => {
@@ -16,13 +16,13 @@ export default function PartitionScreen() {
         setFieldId(storedFieldId);
         setFieldName(storedFieldName);
 
-        // Fetch the field details by fieldId
+
         try {
-          const response = await fetch(`https://yourapiurl.com/api/fields/getFieldById/${storedFieldId}`);
+          const response = await fetch(`https://plot-pro.vercel.app/api/fields/getFieldById/${storedFieldId}`);
           const data = await response.json();
           
           if (response.ok) {
-            setFieldDetails(data); // Set the field details state
+            setFieldDetails(data); 
           } else {
             Alert.alert('Error', 'Failed to fetch field details');
           }
@@ -47,7 +47,6 @@ export default function PartitionScreen() {
           <Text style={styles.fieldText}>Field Name: {fieldDetails.name}</Text>
           <Text style={styles.fieldText}>Area: {fieldDetails.area} m²</Text>
           <Text style={styles.fieldText}>Perimeter: {fieldDetails.perimeter} m</Text>
-          {/* Add more details if necessary */}
         </>
       ) : (
         <Text style={styles.fieldText}>Loading field details...</Text>
