@@ -8,11 +8,11 @@ router.post('/save', async (req, res) => {
   const { userId, name, points, area, perimeter } = req.body;
 
   try {
-    const userObjectId = new mongoose.Types.ObjectId(userId); 
+    const userObjectId = new mongoose.Types.ObjectId(userId); // Correct instantiation of ObjectId
 
     const newField = new Field({
       userId: userObjectId,
-      name,
+      name, // Add the name field
       points,
       area,
       perimeter,
@@ -21,7 +21,7 @@ router.post('/save', async (req, res) => {
     const savedField = await newField.save();
     res.status(201).json(savedField);
   } catch (error) {
-    console.error("Error while saving field data: ", error); 
+    console.error("Error while saving field data: ", error);
     res.status(400).json({ error: 'Failed to save field' });
   }
 });
@@ -34,7 +34,7 @@ router.get('/getFieldsByUser/:userId', async (req, res) => {
     const fields = await Field.find({ userId: userObjectId });
     res.status(200).json(fields);
   } catch (error) {
-    console.error("Error while retrieving fields: ", error); 
+    console.error("Error while retrieving fields: ", error);
     res.status(400).json({ error: 'Failed to retrieve fields' });
   }
 });
