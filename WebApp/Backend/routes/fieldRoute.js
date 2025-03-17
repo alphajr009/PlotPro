@@ -8,11 +8,10 @@ router.post('/save', async (req, res) => {
   const { userId, points, area, perimeter } = req.body;
 
   try {
-    // Ensure correct instantiation of ObjectId
-    const userObjectId = new mongoose.Types.ObjectId(userId); // Correct instantiation of ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId); 
 
     const newField = new Field({
-      userId: userObjectId, // Use ObjectId here
+      userId: userObjectId, 
       points,
       area,
       perimeter,
@@ -30,7 +29,7 @@ router.post('/save', async (req, res) => {
 router.get('/getFieldsByUser/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
-    const userObjectId = new mongoose.Types.ObjectId(userId); // Correct instantiation of ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId);
     const fields = await Field.find({ userId: userObjectId });
     res.status(200).json(fields);
   } catch (error) {
