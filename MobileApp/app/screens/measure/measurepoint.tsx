@@ -98,41 +98,41 @@ export default function MeasurePointScreen() {
   const [isMapDisabled, setIsMapDisabled] = useState(false); // State to control map interaction
   const [fieldId, setFieldId] = useState<string | null>(null); // State to store fieldId
 
-  // Get current location on load and set region to zoom in on it
-  useEffect(() => {
-    const getLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === 'granted') {
-        const userLocation = await Location.getCurrentPositionAsync({});
-        setLocation(userLocation);
-        setMapRegion({
-          latitude: userLocation.coords.latitude,
-          longitude: userLocation.coords.longitude,
-          latitudeDelta: 0.001, 
-          longitudeDelta: 0.001,
-        });
-        setLoading(false); 
-      } else {
-        Alert.alert('Permission Denied', 'Location permission is required.');
-        setLoading(false); 
-      }
-    };
+ // Get current location on load and set region to zoom in on it
+ useEffect(() => {
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status === 'granted') {
+      const userLocation = await Location.getCurrentPositionAsync({});
+      setLocation(userLocation);
+      setMapRegion({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+        latitudeDelta: 0.001, 
+        longitudeDelta: 0.001,
+      });
+      setLoading(false); 
+    } else {
+      Alert.alert('Permission Denied', 'Location permission is required.');
+      setLoading(false); 
+    }
+  };
 
-    const loadUser = async () => {
-      const userData = await AsyncStorage.getItem('user');
-      if (userData) {
-        const user = JSON.parse(userData);
-        setUserId(user._id); 
-      }
-    };
+  const loadUser = async () => {
+    const userData = await AsyncStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      setUserId(user._id); 
+    }
+  };
 
-    getLocation();
-    loadUser(); 
-  }, []);
+  getLocation();
+  loadUser(); 
+}, []);
 
   // Handle point selection on the map
   const handlePress = (e: any) => {
-    if (isMapDisabled) return; // Prevent points from being added when map is disabled
+    if (isMapDisabled) return;
 
     const newPoint = {
       latitude: e.nativeEvent.coordinate.latitude,
@@ -142,7 +142,6 @@ export default function MeasurePointScreen() {
     setPoints((prevPoints) => {
       const updatedPoints = [...prevPoints, newPoint];
 
-      // Only calculate area and perimeter if there are enough points (>=3)
       if (updatedPoints.length >= 3) {
         const newArea = calculateArea(updatedPoints);
         const newPerimeter = calculatePerimeter(updatedPoints);
@@ -157,16 +156,16 @@ export default function MeasurePointScreen() {
 
   // Remove the last point
   const handleBackButtonPress = () => {
-    setIsBackButtonPressed(true); // Set back button pressed state to true
-    setIsMapDisabled(true); // Disable map interaction immediately
+    setIsBackButtonPressed(true); 
+    setIsMapDisabled(true); 
 
     setPoints((prevPoints) => prevPoints.slice(0, prevPoints.length - 1));
     setArea(0);
     setPerimeter(0);
 
     setTimeout(() => {
-      setIsMapDisabled(false); // Enable map interaction again
-      setIsBackButtonPressed(false); // Reset back button state
+      setIsMapDisabled(false); 
+      setIsBackButtonPressed(false); 
     }, 1000); 
   };
 
@@ -175,19 +174,17 @@ export default function MeasurePointScreen() {
       Alert.alert("Error", "User ID is missing");
       return;
     }
-
+  
     const fieldData = {
-      userId, // Send the userId as it is, no need to convert to ObjectId
-      name: fieldName, // Send the field name
+      userId,
+      name: fieldName,
       points,
       area,
       perimeter,
     };
-
+  
     try {
       const API_BASE_URL = 'https://plot-pro.vercel.app/api';
-      console.log('Saving data:', fieldData); // Log the data to be sent
-
       const response = await fetch(`${API_BASE_URL}/fields/save`, {
         method: 'POST',
         headers: {
@@ -195,44 +192,56 @@ export default function MeasurePointScreen() {
         },
         body: JSON.stringify(fieldData),
       });
-
+  
       const data = await response.json();
       if (!response.ok) {
-        console.error('Error response:', data); // Log the error response for debugging
         throw new Error(data.error || 'Failed to save field data');
       }
-
+  
+      const fieldId = data._id; // Extract the field ID
+  
+      // Store both fieldId and fieldName in AsyncStorage
+      await AsyncStorage.setItem('tempFieldId', fieldId); // Save fieldId in AsyncStorage
+      await AsyncStorage.setItem('fieldName', fieldName); // Save fieldName in AsyncStorage
+  
       Alert.alert('Success', 'Field data saved successfully!');
-      setFieldId(data._id); // Save the fieldId from the response
-      setShowModal(false); // Close the modal
-
-      setShowPartitionQuestion(true); // Ask if the user wants to partition
-
+      setShowModal(false);
+      setShowPartitionQuestion(true);
+  
     } catch (error) {
-      console.error('Error saving field data:', error); // Detailed error logging
+      console.error('Error saving field data:', error);
       Alert.alert('Error', 'Failed to save field data.');
     }
   };
+  
 
-  const handlePartitionResponse = (response: string) => {
+  
+
+  const handlePartitionResponse = async (response: string) => {
     setShowPartitionQuestion(false);
     if (response === 'Yes') {
-      // Navigate to partition screen and pass fieldId and fieldName as query params
+      // Get the fieldId from AsyncStorage and navigate to PartitionScreen
+      const fieldId = await AsyncStorage.getItem('tempFieldId');
+      const fieldName = await AsyncStorage.getItem('fieldName'); // Store field name temporarily in AsyncStorage
       router.push({
         pathname: '/screens/measure/partition',
-        query: { fieldId, fieldName },
+        params: { fieldId, fieldName }, // Passing the fieldId and fieldName as params
       });
+    } else {
+      // Clear the fieldId from AsyncStorage if "No"
+      await AsyncStorage.removeItem('tempFieldId');
+      await AsyncStorage.removeItem('fieldName');
+      router.push('/(tabs)/measure');
     }
   };
   
-  
 
-  // Cancel the current process and go back
+  // Define the handleCancel function
   const handleCancel = () => {
-    setPoints([]);
-    setArea(0);
-    setPerimeter(0);
-    router.push('/(tabs)/measure');
+    setPoints([]); // Clear the points
+    setArea(0); // Clear the area
+    setPerimeter(0); // Clear the perimeter
+    router.push('/(tabs)/measure'); // Navigate back to the measure screen
   };
 
   return (
@@ -253,14 +262,12 @@ export default function MeasurePointScreen() {
           {points.map((point, index) => (
             <Marker key={index} coordinate={point} />
           ))}
-
           {points.length >= 3 && (
             <Polygon coordinates={points} strokeColor="purple" fillColor="rgba(128, 0, 128, 0.5)" />
           )}
         </MapView>
       )}
 
-      {/* Display Area and Perimeter on top */}
       <View style={styles.topDisplay}>
         <View style={styles.circle}>
           <Text style={styles.circleText}>Area: {area} m²</Text>
@@ -270,14 +277,12 @@ export default function MeasurePointScreen() {
         </View>
       </View>
 
-      {/* Measure Menu */}
       {measureMenuVisible && (
         <View style={styles.measureMenu}>
           <TouchableOpacity style={styles.backButton} onPress={handleBackButtonPress}>
             <Icon name="arrow-left" size={20} color="#fff" style={styles.curvedArrowIcon} />
           </TouchableOpacity>
 
-          {/* Save and Cancel Buttons */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.saveButton} onPress={() => setShowModal(true)}>
               <Text style={styles.buttonText}>Save</Text>
@@ -289,7 +294,6 @@ export default function MeasurePointScreen() {
         </View>
       )}
 
-      {/* Modal for entering field name */}
       <Modal visible={showModal} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -312,7 +316,6 @@ export default function MeasurePointScreen() {
         </View>
       </Modal>
 
-      {/* Partition question */}
       {showPartitionQuestion && (
         <View style={styles.partitionQuestionContainer}>
           <Text style={styles.partitionQuestionText}>Do you need to partition?</Text>

@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PartitionScreen() {
-  const router = useRouter();
   const [fieldId, setFieldId] = useState<string | null>(null);
   const [fieldName, setFieldName] = useState<string>('');
 
   useEffect(() => {
-    // Make sure router.query is available before accessing it
-    if (router.query?.fieldId && router.query?.fieldName) {
-      const { fieldId, fieldName } = router.query; // Retrieve query parameters
-      setFieldId(fieldId as string);
-      setFieldName(fieldName as string);
-    }
-  }, [router.query]); // Re-run effect when query changes
+    const fetchFieldData = async () => {
+      // Retrieve both fieldId and fieldName from AsyncStorage
+      const storedFieldId = await AsyncStorage.getItem('tempFieldId');
+      const storedFieldName = await AsyncStorage.getItem('fieldName');
+      
+      if (storedFieldId && storedFieldName) {
+        setFieldId(storedFieldId);
+        setFieldName(storedFieldName);
+      } else {
+        console.log('No fieldId or fieldName found in AsyncStorage');
+      }
+    };
+
+    fetchFieldData();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Partition Field</Text>
-
-      {/* Display Field ID and Name */}
-      <View style={styles.fieldInfo}>
-        <Text style={styles.fieldText}>Field ID: {fieldId}</Text>
-        <Text style={styles.fieldText}>Field Name: {fieldName}</Text>
-      </View>
-
-      {/* Add additional content here for partition */}
+      <Text style={styles.fieldText}>Field ID: {fieldId}</Text>
+      <Text style={styles.fieldText}>Field Name: {fieldName}</Text>
     </View>
   );
 }
@@ -42,9 +43,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  fieldInfo: {
     marginBottom: 20,
   },
   fieldText: {
