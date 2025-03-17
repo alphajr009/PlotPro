@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Field = require('../models/field');
-const User = require('../models/user'); // Import the User model
 
 // Handle saving the field data
 router.post('/save', async (req, res) => {
   const { userId, name, points, area, perimeter } = req.body;
 
   try {
-    const userObjectId = new mongoose.Types.ObjectId(userId); // Correct instantiation of ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
     const newField = new Field({
       userId: userObjectId,
@@ -27,18 +26,19 @@ router.post('/save', async (req, res) => {
   }
 });
 
-// Route to get field by ID
+// Route to get field by ID (without populate)
 router.get('/getFieldById/:fieldId', async (req, res) => {
   try {
-    const { fieldId } = req.params; // Extract fieldId from the request parameters
+    const { fieldId } = req.params;
 
-    // Fetch the field by its ID and populate the userId field
-    const field = await Field.findById(fieldId).populate('userId', 'name email gender'); // Populate userId with user's name, email, and gender
+    // Fetch the field without population
+    const field = await Field.findById(fieldId);
+    
     if (!field) {
       return res.status(404).json({ error: 'Field not found' });
     }
 
-    res.status(200).json(field); // Return the field details
+    res.status(200).json(field); // Return the field data
   } catch (error) {
     console.error('Error while retrieving field by ID: ', error);
     res.status(400).json({ error: 'Failed to retrieve field' });
