@@ -1,17 +1,16 @@
 const mongoose = require('mongoose'); 
 const Schema = mongoose.Schema; 
 
-// Define a schema for the Plant collection
 const plantSchema = new Schema({
   // Basic plant information
   plant_name: { type: String, required: true },  // Name of the plant
-  country: { type: String, required: true },  // Origin country of the plant
+  country: { type: String, required: true }, 
   scientific_name: { type: String, required: true },  // Scientific name of the plant
   days_to_yield: { type: Number, required: true },  // Number of days required for harvesting
 
   // Optimal growing conditions
   optimal_conditions: {
-    temperature_range: {  // Ideal temperature range for plant growth
+    temperature_range: { 
       min: { type: Number, required: true },  // Minimum temperature
       max: { type: Number, required: true }   // Maximum temperature
     },
