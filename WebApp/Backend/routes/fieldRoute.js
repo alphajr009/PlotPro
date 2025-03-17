@@ -5,13 +5,14 @@ const Field = require('../models/field');
 
 // Handle saving the field data
 router.post('/save', async (req, res) => {
-  const { userId, points, area, perimeter } = req.body;
+  const { userId, name, points, area, perimeter } = req.body;
 
   try {
     const userObjectId = new mongoose.Types.ObjectId(userId); 
 
     const newField = new Field({
-      userId: userObjectId, 
+      userId: userObjectId,
+      name,
       points,
       area,
       perimeter,
