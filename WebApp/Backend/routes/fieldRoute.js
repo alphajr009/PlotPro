@@ -26,6 +26,24 @@ router.post('/save', async (req, res) => {
   }
 });
 
+
+router.get('/getFieldById/:fieldId', async (req, res) => {
+  try {
+    const { fieldId } = req.params; 
+
+    const field = await Field.findById(fieldId).populate('userId', 'name'); 
+    if (!field) {
+      return res.status(404).json({ error: 'Field not found' });
+    }
+
+    res.status(200).json(field); 
+  } catch (error) {
+    console.error('Error while retrieving field by ID: ', error);
+    res.status(400).json({ error: 'Failed to retrieve field' });
+  }
+});
+
+
 // Route to get fields by user
 router.get('/getFieldsByUser/:userId', async (req, res) => {
   try {

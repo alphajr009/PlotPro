@@ -1,32 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PartitionScreen() {
-  const router = useRouter();
   const [fieldId, setFieldId] = useState<string | null>(null);
   const [fieldName, setFieldName] = useState<string>('');
+  const [fieldDetails, setFieldDetails] = useState<any>(null); // State to hold field details
 
   useEffect(() => {
-    // Make sure router.query is available before accessing it
-    if (router.query?.fieldId && router.query?.fieldName) {
-      const { fieldId, fieldName } = router.query; // Retrieve query parameters
-      setFieldId(fieldId as string);
-      setFieldName(fieldName as string);
-    }
-  }, [router.query]); // Re-run effect when query changes
+    const fetchFieldData = async () => {
+      const storedFieldId = await AsyncStorage.getItem('tempFieldId');
+      const storedFieldName = await AsyncStorage.getItem('fieldName');
+
+      if (storedFieldId && storedFieldName) {
+        setFieldId(storedFieldId);
+        setFieldName(storedFieldName);
+
+        // Fetch the field details by fieldId
+        try {
+          const response = await fetch(`https://yourapiurl.com/api/fields/getFieldById/${storedFieldId}`);
+          const data = await response.json();
+          
+          if (response.ok) {
+            setFieldDetails(data); // Set the field details state
+          } else {
+            Alert.alert('Error', 'Failed to fetch field details');
+          }
+        } catch (error) {
+          console.error('Error fetching field data:', error);
+          Alert.alert('Error', 'Failed to fetch field details');
+        }
+      } else {
+        console.log('No fieldId or fieldName found in AsyncStorage');
+      }
+    };
+
+    fetchFieldData();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Partition Field</Text>
-
-      {/* Display Field ID and Name */}
-      <View style={styles.fieldInfo}>
-        <Text style={styles.fieldText}>Field ID: {fieldId}</Text>
-        <Text style={styles.fieldText}>Field Name: {fieldName}</Text>
-      </View>
-
-      {/* Add additional content here for partition */}
+      {fieldDetails ? (
+        <>
+          <Text style={styles.fieldText}>Field ID: {fieldDetails._id}</Text>
+          <Text style={styles.fieldText}>Field Name: {fieldDetails.name}</Text>
+          <Text style={styles.fieldText}>Area: {fieldDetails.area} m²</Text>
+          <Text style={styles.fieldText}>Perimeter: {fieldDetails.perimeter} m</Text>
+          {/* Add more details if necessary */}
+        </>
+      ) : (
+        <Text style={styles.fieldText}>Loading field details...</Text>
+      )}
     </View>
   );
 }
@@ -42,9 +67,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  fieldInfo: {
     marginBottom: 20,
   },
   fieldText: {
