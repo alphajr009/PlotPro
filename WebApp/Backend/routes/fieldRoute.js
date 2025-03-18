@@ -48,7 +48,7 @@ router.get('/getFieldById/:fieldId', async (req, res) => {
 
 // Route to add partitions to a field
 router.post('/addPartition', async (req, res) => {
-  const { fieldId, partitionLabel, partitionColor, partitionPoints } = req.body;
+  const { fieldId, partitionData } = req.body;
 
   try {
     const field = await Field.findById(fieldId);
@@ -57,21 +57,28 @@ router.post('/addPartition', async (req, res) => {
       return res.status(404).json({ error: 'Field not found' });
     }
 
-    // Add the new partition
-    field.partitions.push({
-      label: partitionLabel,
-      color: partitionColor,
-      points: partitionPoints
+    if (!Array.isArray(partitionData) || partitionData.length === 0) {
+      return res.status(400).json({ error: 'No partition data provided' });
+    }
+
+    // Add all partitions from the frontend
+    partitionData.forEach(partition => {
+      field.partitions.push({
+        label: partition.label,
+        color: partition.color,
+        points: partition.points
+      });
     });
 
     await field.save();
 
-    res.status(200).json({ message: 'Partition added successfully', field });
+    res.status(200).json({ message: 'Partitions added successfully', field });
   } catch (error) {
     console.error('Error while adding partition: ', error);
-    res.status(400).json({ error: 'Failed to add partition' });
+    res.status(400).json({ error: 'Failed to add partitions' });
   }
 });
+
 
 // Route to get fields by user
 router.get('/getFieldsByUser/:userId', async (req, res) => {
