@@ -1,0 +1,25 @@
+{
+  "name": "fyp-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@turf/turf": "^7.1.0",
+    "express": "^4.21.1",
+    "fyp-project": "file:",
+    "mongoose": "^8.8.3",
+    "multer": "^1.4.5-lts.1",
+    "shapefile": "^0.6.6",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.7"
+  },
+  "type": "module"
+}
