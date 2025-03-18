@@ -181,7 +181,7 @@ export default function PartitionScreen() {
       const response = await fetch('https://plot-pro.vercel.app/api/fields/addPartition', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fieldId, partitionData }),
+        body: JSON.stringify({ fieldId, partitionData }), // ✅ Sending the entire array correctly
       });
   
       if (!response.ok) {
@@ -189,7 +189,7 @@ export default function PartitionScreen() {
       }
   
       Alert.alert('Success', 'All partition data saved successfully!');
-      
+  
       setPartitionData([]); // Clear saved partitions
       setShowButtons(false); // Hide partition controls
       setIsPartitioning(false); // Ensure partitioning mode is off
@@ -198,6 +198,7 @@ export default function PartitionScreen() {
       Alert.alert('Error', 'Failed to save partition data');
     }
   };
+  
   
   
   
