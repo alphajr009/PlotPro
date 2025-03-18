@@ -9,6 +9,14 @@ const fieldSchema = new mongoose.Schema({
   }],
   area: { type: Number, required: true },
   perimeter: { type: Number, required: true },
+  partitions: [{
+    label: { type: String, required: true },
+    color: { type: String, required: true },
+    points: [{
+      latitude: { type: Number, required: true },
+      longitude: { type: Number, required: true }
+    }]
+  }],
   createdAt: { type: Date, default: Date.now }
 });
 
