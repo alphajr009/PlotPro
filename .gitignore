@@ -1,0 +1,16 @@
+BaseV1/MobileApp/node_modules/
+BaseV1/MobileApp/.expo/
+
+BaseV1/WebApp/Backend/node_modules/
+BaseV1/WebApp/Frontend/node_modules/
+
+Python/App/.env
+Python/Dataset/.env
+Python/plant/.env
+Python/Soil type/.env
+
+MobileApp/.expo/
+MobileApp/node_modules/
+
+WebApp/Backend/node_modules/
+WebApp/Frontend/node_modules/

@@ -1,0 +1,41 @@
+.setup-card {
+  padding: 2rem;
+}
+
+.setup-card-title {
+  text-align: center;
+  color: #007BFF;
+  padding: 1rem;
+}
+
+.setup-card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three cards per row by default */
+  gap: 2rem;
+}
+
+.setup-card-item {
+  max-width: 22rem;
+  height: auto;
+}
+
+.setup-card-text {
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two cards per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr; /* One card per row on small screens */
+  }
+}

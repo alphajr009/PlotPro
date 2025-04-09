@@ -1,0 +1,119 @@
+.card-container {
+  position: relative;
+  width: 200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  overflow: hidden;
+  margin: 10px 5px;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .card-container {
+    width: 270px;
+  }
+}
+
+.card-flex {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px;
+}
+
+@media (min-width: 768px) {
+  .card-flex {
+    flex-direction: row;
+  }
+}
+.card-image-container {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+}
+
+.image-loader {
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card-image {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  margin-top: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card-image.loaded {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .card-image,
+  .image-loader {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.card-content {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 50%; /* Adjust this value as needed */
+  overflow: hidden; /* This will prevent content from spilling out */
+}
+.templateName {
+  font-size: 15px;
+  color: black;
+  font-weight: 500;
+}
+
+.templateLocation {
+  font-size: 13px;
+  color: black;
+  margin: 0;
+}
+
+.dateText {
+  font-size: 13px;
+  color: black;
+}
+
+.edit-icon,
+.delete-icon {
+  position: absolute;
+  cursor: pointer;
+  color: #555252;
+}
+
+.edit-icon {
+  top: 12px;
+  right: 8px;
+  font-size: 20px;
+}
+
+.delete-icon {
+  bottom: 13px;
+  right: 8px;
+  font-size: 20px;
+}

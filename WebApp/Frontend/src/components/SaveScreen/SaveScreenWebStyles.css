@@ -1,0 +1,100 @@
+.land-info-div {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.info-blocks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+
+.info-block {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+.info-icon {
+  margin-right: 10px;
+  top: 0;
+}
+
+.bold-text {
+  font-weight: 500;
+}
+
+p {
+  margin: 0;
+}
+
+.mn-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.mn-label {
+  margin-right: 10px;
+}
+
+.mn-label,
+p {
+  font-size: 12px; /* adjust this value as needed */
+}
+.mn-input {
+  width: 150px;
+  border: none;
+  border-bottom: 2px solid rgb(162, 162, 162);
+  background: transparent;
+  outline: none;
+  font-size: 12px;
+}
+
+.desc-block {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.desc-input {
+  border: none;
+  border-bottom: 2px solid rgb(162, 162, 162);
+  background: white;
+  outline: none;
+  margin-top: 10px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.save-button-div {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 90%;
+  padding: 5px 0;
+  font-size: 14px;
+  background-color: #064dbe;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,23 @@
+.sidebar-style {
+  flex: 1;
+  width: 250px; /* Width of the sidebar */
+  height: 100vh; /* Height of the sidebar */
+  position: absolute; /* Make it stick to the left */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #ffffff; /* Black */
+  overflow-y: hidden; /* Disable horizontal scroll */
+  padding-top: 20px; /* Place content 20px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+  animation: slideInLeft 0.5s forwards;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^5.3.7",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@iconify/react": "^5.0.1",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10",
+    "@react-google-maps/api": "^2.19.3",
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@turf/turf": "^7.0.0",
+    "antd": "^5.18.1",
+    "antd-style": "^3.6.2",
+    "autoprefixer": "^10.4.17",
+    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.4.3",
+    "dom-to-image": "^2.6.0",
+    "html2canvas": "^1.4.1",
+    "jwt-decode": "^4.0.0",
+    "mdb-react-ui-kit": "^7.2.0",
+    "mdbreact": "^5.2.0",
+    "postcss": "^8.4.35",
+    "react": "^18.2.0",
+    "react-bootstrap-icons": "^1.11.3",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "react-modal": "^3.16.1",
+    "react-pro-sidebar": "^1.1.0",
+    "react-router-dom": "^6.22.0",
+    "react-scripts": "5.0.1",
+    "react-scroll": "^1.9.0",
+    "react-select": "^5.8.0",
+    "react-spinners": "^0.13.8",
+    "react-toastify": "^10.0.5",
+    "react-transition-group": "^4.4.5",
+    "recharts": "^2.12.7",
+    "sweetalert2": "^11.12.0",
+    "swiper": "^11.0.7",
+    "tailwindcss": "^3.4.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:5000/",
+  "devDependencies": {
+    "daisyui": "^4.7.2"
+  }
+}

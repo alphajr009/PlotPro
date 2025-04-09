@@ -1,0 +1,57 @@
+{
+  "expo": {
+    "name": "fieldmaster",
+    "slug": "fieldmaster",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kanishkazoysa.fieldmaster",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.kanishkazoysa.fieldmaster",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ]
+    },
+    "web": {
+      "config": {
+        "oauth": {
+          "redirectUri": "http://localhost:19006/oauth"
+        }
+      }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "locationBackgroundPermission": "Allow $(PRODUCT_NAME) to use your location in the background."
+        }
+      ]
+    ],
+    "scheme": "fieldmaster",
+    "extra": {
+      "eas": {
+        "projectId": "bf799190-a209-4b75-98b5-5ae3e66ea111"
+      }
+    }
+  }
+}
