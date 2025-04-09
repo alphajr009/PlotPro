@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +6,115 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #007bff;
+  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.container {
+  flex: 1;
+  max-width: 1300px !important;
+  margin: 0 ;
+  overflow-x: hidden;
+  position: relative;
+}
+.ContactContainer
+{
+  flex: 1;
+  overflow-x: hidden;
+}
+@media (max-width: 1300px) {
+  .container {
+    padding: 0 ;
+  }
+}
+
+@media (max-width: 1380px) {
+  .container {
+    padding: 0 ;
+  }
+}
+
+/* AuthLayout.css */
+.main-container {
+  display: flex;
+  flex:2;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.page-container {
+  width: 50%;
+  display: flex;
+  flex:1;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.auth-layout {
+  width: 50%;
+  flex:1;
+  padding: 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Add this line */
+}
+
+@media (max-width: 999px) {
+  .main-container {
+    flex-direction: raw;
+    align-items: center;
+  }
+
+  .page-container,
+  .auth-layout {
+    width: 100%;
+  }
+
+  .auth-layout {
+    display: none;
+  }
+}
+
+
+
+/* fonts */
+
+@font-face {
+  font-family: "SF Pro Display-Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./fonts/SFPro-Display-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SF Pro Display-Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/SFPro-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Display-Bold";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./fonts/SFPro-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SF Pro Display-Italic";
+  font-style: normal;
+  src: url("./fonts/SF\ Pro\ Display\ Italic.ttf") format("truetype");
+}
+
+/* headers */
+
+h3 {
+  font-family: "SF Pro Display-Medium";
+  margin-top: 0px;
+  margin-bottom: 20px;
 }

@@ -1,0 +1,182 @@
+.div-01 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-div {
+  padding: 10px;
+}
+
+.outer-div {
+  padding: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.details {
+  text-align: left;
+}
+
+.edit-icon-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+.templateName-text {
+  font-weight: 500;
+  font-size: 17px;
+  margin-top: -10px;
+}
+p {
+  margin: 0;
+  font-size: 13px;
+}
+.backBtn {
+  margin-top: -5px;
+  margin-left: -15px;
+}
+.map-img-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.div-02 {
+  margin-top: 20px;
+}
+.map-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.manage-land-btn {
+  display: block;
+  width: 150px;
+  height: 40px;
+  border: none;
+  margin-top: 10px;
+  background-color: #064cbe;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  color: white;
+}
+
+.breaker {
+  border: none;
+  border-top: 1px solid grey;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.div-03 {
+  display: flex;
+  justify-content: space-around;
+}
+
+.icon-container {
+  text-align: center;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.icon {
+  font-size: 20px;
+  color: white;
+}
+
+.circle-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+}
+
+.circle-div-1 {
+  background-color: #4b4141;
+}
+
+.circle-div-2 {
+  background-color: #2b7d42;
+}
+
+.circle-div-3 {
+  background-color: #3f3d98;
+}
+
+.bold-text {
+  font-weight: 500;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.info-container {
+  display: flex;
+  width: 45%;
+  margin-bottom: 10px;
+}
+
+.info-icon {
+  margin-right: 10px;
+  font-size: 25px;
+  margin-top: 5px;
+}
+
+.bold-text {
+  font-weight: 500;
+}
+
+.description-div {
+  margin-top: 10px;
+}
+
+.description-text {
+  margin-top: 10px;
+}
+
+.icon,
+.edit-icon {
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.action-btn {
+  display: block;
+  width: 230px;
+  height: 30px;
+  border: none;
+  background-color: #064cbe;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 13px;
+  padding-bottom: 5px;
+}

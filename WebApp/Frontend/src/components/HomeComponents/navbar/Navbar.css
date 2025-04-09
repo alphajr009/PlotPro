@@ -1,0 +1,185 @@
+.protest-riot-regular {
+    font-family: "Protest Riot", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .nav-wrapper {
+    background:white;
+    padding:  0;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    backdrop-filter: blur(50px);
+    height: 5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #d3d3dd;
+   
+  }
+  .nav-links{
+    padding-top: 1rem;
+   
+  }
+  .styled{
+    font-family: "Protest Riot", sans-serif;
+    font-weight: 400;
+    font-style: bold;
+    color: #007bff;
+  }
+  .nav-content {
+    max-width: 1300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    margin: 0 auto;
+    
+  }
+  
+  .logo{
+    max-width: 12rem;
+    margin: 0;
+    margin-top: 0;
+ 
+  }
+  .image {
+    width: 60%;
+    margin-bottom: 8%;
+    
+  }
+  
+  .nav-content ul {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+  }
+  
+  .nav-content li {
+    margin: 0 1.5rem;
+  }
+  
+  .menu-item {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #073763;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .menu-item::before {
+    content: " ";
+    width: 2rem;
+    height: 0.2rem;
+    background: #007bff;
+    border-radius: 0.5rem;
+    position: absolute;
+    bottom: -0.6rem;
+    opacity: 0;
+    transform: translateX(-1.5rem);
+    transition: all 0.3s ease;
+  }
+
+  .menu-item:hover::before {
+    width: 100%;
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .menu-item.active::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  
+  
+  .contact-btn {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #007bff;
+    padding: 0.6rem 2rem;
+    border: none;
+    outline: 1.5px solid transparent;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    transition: all 0.3 ease;
+  }
+  
+  .contact-btn:hover {
+    color: white;
+    background:#6fa8dc;
+    outline: 1.5px solid #007bff;
+  }
+  
+  .menu-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 0.4rem;
+    color: #fff;
+    background: #007bff;
+    line-height: 0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: none;
+  }
+  
+  .menu-btn:hover {
+    color: #007bff;
+    background: #e7e4e4;
+    border: 1px solid #6fa8dc;
+  }
+  
+  @media (max-width: 769px) {
+    .logo {
+      width: 10rem !important;
+      height: auto;
+    }
+  
+    .menu-btn {
+      display: block;
+    }
+  
+    .nav-content ul {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 920px) {
+    .logo {
+      width: 9rem;
+      height: auto;
+    }
+  
+    .nav-content ul {
+      gap: 0;
+    }
+  
+    .nav-content li {
+      margin: 0 1rem;
+    }
+    .menu-item {
+      font-size: 0.85rem;
+    }
+  
+    .contact-btn {
+      font-size: 0.8rem;
+      padding: 0.6rem 1rem;
+    }
+  }
+  
+  @media (max-width: 1325px) {
+    .nav-wrapper {
+      padding: 0 2rem;
+    }
+  }
+  

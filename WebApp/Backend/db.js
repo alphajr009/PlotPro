@@ -1,19 +1,19 @@
 const { default: mongoose } = require("mongoose");
-mongoose.set("strictQuery", true);
+mongoose.set('strictQuery', true);
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-});
+const mongoURL = process.env.MONGODB_URI;
 
-var connection = mongoose.connection;
+mongoose.connect(process.env.MONGODB_URI || mongoURL, { useUnifiedTopology: true, useNewUrlParser: true, })
 
-connection.on("error", () => {
-  console.log("MongDB Connection Failed");
-});
 
-connection.on("connected", () => {
-  console.log("MongoDB Connection Successful");
-});
+var connection = mongoose.connection
 
-module.exports = mongoose;
+connection.on('error', () => {
+    console.log('MongDB Connection Failed')
+})
+
+connection.on('connected', () => {
+    console.log('MongoDB Connection Successful')
+})
+
+module.exports = mongoose

@@ -1,0 +1,83 @@
+.backBtn:hover {
+  cursor: pointer;
+}
+
+.innerDiv {
+  margin: 5px;
+}
+
+.backBtnDiv {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+@media (min-width: 768px) {
+  .card-image {
+    width: 128px;
+    border-radius: 10px;
+  }
+}
+.search-bar {
+  flex-grow: 1;
+  padding: 5px;
+  padding-left: 10px;
+  margin-right: 10px;
+  border-radius: 500px;
+  border: 1px solid #ccc;
+}
+
+@media (min-width: 768px) {
+  .search-bar {
+    width: 100%;
+    margin: 20px auto;
+  }
+}
+
+.search-bar:focus {
+  border-color: #ccc;
+  outline: none;
+}
+
+.headingDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: auto;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.spin-container {
+  display: flex;
+  flex-direction: column; /* Change to column to stack children vertically */
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  min-width: 250px;
+  font-size: 12px;
+}
+
+.loading-text {
+  text-align: center; /* Center the text horizontally */
+  width: 100%; /* Ensure it spans the full width of its container */
+  margin-top: 20px; /* Add some space between the spinner and the text */
+}
+.search-icon {
+  color: #adacac;
+  position: absolute;
+  right: 18px;
+}
+
+@media (max-width: 768px) {
+  .search-icon {
+    right: 28px;
+    font-size: 14px;
+  }
+}
