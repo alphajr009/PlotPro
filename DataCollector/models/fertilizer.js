@@ -7,7 +7,7 @@ const fertilizerSchema = new Schema({
     type: String, 
     enum: ['Solid', 'Liquid', 'Dust'], 
     required: true 
-  },  // Type of the fertilizer (Solid, Liquid, Dust)
+  },  
 
   unit: { 
     type: String, 
