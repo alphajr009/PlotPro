@@ -48,5 +48,5 @@
     "@babel/core": "^7.20.0"
   },
   "private": true,
-  "proxy": "http://localhost:5000/"
+  "proxy": "https://plot-pro.vercel.app/"
 }
