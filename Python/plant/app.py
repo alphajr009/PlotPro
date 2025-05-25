@@ -57,10 +57,10 @@ def analyze_text():
             messages=[{"role": "user", "content": prompt}],
         )
 
-        # Extract GPT's response
+       
         response_text = chat_completion.choices[0].message.content.strip()
 
-        # Debugging: Print raw response before parsing
+       
         print("Raw GPT Response:\n", response_text)
 
         # Use regex to extract valid JSON block if GPT returns extra text
