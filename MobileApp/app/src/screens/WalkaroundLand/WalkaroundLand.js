@@ -53,12 +53,12 @@ export default function WalkaroundLand() {
   const [showFillColor, setShowFillColor] = useState(false);
   const [isPolygonClosed, setIsPolygonClosed] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  //define taskmanager to request location permission
+
   TaskManager.defineTask(BACKGROUND_LOCATION_TASK, async ({ data, error }) => {
     if (error) {
       console.error("Background location task error:", error);
       return;
-    } //get location data
+    } 
 
     if (data) {
       const { locations } = data;
@@ -69,7 +69,7 @@ export default function WalkaroundLand() {
           longitude: location.coords.longitude,
           accuracy: location.coords.accuracy,
         }));
-        //set pathcoordinates array to store location data
+    
         setPathCoordinates((prevCoordinates) => [
           ...prevCoordinates,
           ...newCoordinates,
@@ -92,7 +92,7 @@ export default function WalkaroundLand() {
   });
 
   const handleReMeasure = () => {
-    // Reset all relevant state
+  
     setPathCoordinates([]);
     setUndoStack([]);
     setTrackingStarted(false);
@@ -108,7 +108,6 @@ export default function WalkaroundLand() {
     setShowFillColor(false);
     setIsPolygonClosed(false);
 
-    // Restart location tracking
     startTracking();
   };
 
@@ -139,28 +138,28 @@ export default function WalkaroundLand() {
   };
 
   const handleStartPress = () => {
-    //start tracking location
+ 
     setTrackingPaused(!trackingPaused);
     if (!trackingPaused) {
       setDrawPolyline(true);
-      setPathCoordinates([initialLocation]); //set initial location
-      setIsSaveButtonDisabled(true); //disable save button
-      setShowFillColor(false); //hide fill color
-      setIsPolygonClosed(false); //  set polygon closed to false
+      setPathCoordinates([initialLocation]); 
+      setIsSaveButtonDisabled(true);
+      setShowFillColor(false); 
+      setIsPolygonClosed(false); 
     } else {
       setTrackingStarted(false);
       setIsResizeButtonDisabled(false);
-      setIsStartPauseButtonDisabled(true); //disable start button
-      setIsSaveButtonDisabled(false); // enable save button
+      setIsStartPauseButtonDisabled(true); 
+      setIsSaveButtonDisabled(false); 
       setShowFillColor(true);
       setIsPolygonClosed(true);
       stopLocationUpdates();
-      calculateAreaAndPerimeter(); //calculate area and perimeter
+      calculateAreaAndPerimeter();
     }
   };
 
   const handleResizeEnd = () => {
-    //if point is drag calculate area and perimeter
+
     calculateAreaAndPerimeter();
   };
 
@@ -210,15 +209,14 @@ export default function WalkaroundLand() {
     };
   }, []);
 
-  //stop location updates
   const stopLocationUpdates = async () => {
     try {
-      // Check if the task is already running and stop it if it is running
+     
       const isTaskRunning = await TaskManager.isTaskRegisteredAsync(
         BACKGROUND_LOCATION_TASK
       );
       if (isTaskRunning) {
-        await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK); //stop location updates
+        await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
         console.log("Background location updates stopped");
       }
     } catch (error) {
@@ -227,17 +225,17 @@ export default function WalkaroundLand() {
   };
 
   const toggleMapType = () => {
-    //toggle map type dropdown menu
+    
     setShowDropdown(!showDropdown);
   };
 
   const selectMapType = (index) => {
-    setMapTypeIndex(index); //set map type index
+    setMapTypeIndex(index); 
     setShowDropdown(false);
   };
 
   const focusOnCurrentLocation = () => {
-    //focus on current location
+
     if (mapRef.current && currentLocation) {
       mapRef.current.animateToRegion({
         latitude: currentLocation.latitude,
@@ -255,18 +253,17 @@ export default function WalkaroundLand() {
     { name: "Terrain", value: "terrain" },
   ];
 
-  //calculate area and perimeter of polygon
   const calculateAreaAndPerimeter = () => {
     const polygon = {
       type: "Polygon",
       coordinates: [
-        pathCoordinates.map((coord) => [coord.longitude, coord.latitude]), //get coordinates
+        pathCoordinates.map((coord) => [coord.longitude, coord.latitude]), 
       ],
     };
-    const polygonArea = area(polygon); //calculate area by using turf library
+    const polygonArea = area(polygon); 
     setCalculatedArea(polygonArea * 0.03954);
 
-    // Calculate perimeter
+    
     let perimeter = 0;
     for (let i = 0; i < pathCoordinates.length; i++) {
       const start = [pathCoordinates[i].longitude, pathCoordinates[i].latitude];
@@ -277,10 +274,9 @@ export default function WalkaroundLand() {
       perimeter += distance(start, end, { units: "kilometers" });
     }
 
-    setPolygonPerimeter(perimeter); //  set polygon perimeter
+    setPolygonPerimeter(perimeter);
   };
 
-  // save map data
   const saveMapData = async () => {
     try {
       setIsSaving(true);
@@ -309,24 +305,24 @@ export default function WalkaroundLand() {
     }
   };
 
-  //  handle drag end
+  
   const handleResize = () => {
     const newResizingMode = !resizingMode;
     setResizingMode(newResizingMode);
     if (newResizingMode) {
-      // Entering resize mode
+   
       setShowUndoButton(true);
     } else {
-      // Exiting resize mode (pressing Done)
+  
       setShowUndoButton(false);
     }
   };
 
-  //handle drag points
+ 
   const handleDragEnd = (event, index) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate; // Dragged point
-    const updatedCoordinates = [...pathCoordinates]; //update path coordinates
-    const draggedPoint = { latitude, longitude }; //
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    const updatedCoordinates = [...pathCoordinates]; 
+    const draggedPoint = { latitude, longitude }; 
     updatedCoordinates[index] = draggedPoint;
 
     const prevIndex =
@@ -336,7 +332,7 @@ export default function WalkaroundLand() {
     const intermediatePrev = insertIntermediatePoints(
       updatedCoordinates[prevIndex],
       draggedPoint
-    ); //insert intermediate points
+    ); 
     const intermediateNext = insertIntermediatePoints(
       draggedPoint,
       updatedCoordinates[nextIndex]
@@ -349,13 +345,13 @@ export default function WalkaroundLand() {
       ...intermediateNext
     );
 
-    setUndoStack((prevStack) => [...prevStack, [...pathCoordinates]]); // Save previous state to undo stack
+    setUndoStack((prevStack) => [...prevStack, [...pathCoordinates]]); 
     setPathCoordinates(updatedCoordinates);
     setShowUndoButton(true);
     handleResizeEnd();
     setShowFillColor(true);
 
-    // If the polygon is closed, ensure it stays closed
+   
     if (isPolygonClosed) {
       updatedCoordinates[updatedCoordinates.length - 1] = {
         ...updatedCoordinates[0],
@@ -365,29 +361,27 @@ export default function WalkaroundLand() {
 
   const handleUndo = () => {
     if (undoStack.length > 0) {
-      const newUndoStack = [...undoStack]; // Copy the stack
-      const previousState = newUndoStack.pop(); // Get the previous state
+      const newUndoStack = [...undoStack]; 
+      const previousState = newUndoStack.pop(); 
       setUndoStack(newUndoStack);
       setPathCoordinates(previousState);
       calculateAreaAndPerimeter();
 
-      // Hide undo icon if stack is empty
       if (newUndoStack.length === 0) {
         setShowUndoButton(false);
       }
     }
   };
 
-  // insert intermediate points
   const insertIntermediatePoints = (startPoint, endPoint, numPoints = 1) => {
     const points = [];
     for (let i = 1; i <= numPoints; i++) {
       const ratio = i / (numPoints + 1);
       const lat =
-        startPoint.latitude + (endPoint.latitude - startPoint.latitude) * ratio; // Calculate the intermediate point
+        startPoint.latitude + (endPoint.latitude - startPoint.latitude) * ratio; 
       const lng =
         startPoint.longitude +
-        (endPoint.longitude - startPoint.longitude) * ratio; // Calculate the intermediate point
+        (endPoint.longitude - startPoint.longitude) * ratio; 
       points.push({ latitude: lat, longitude: lng });
     }
     return points;
@@ -439,9 +433,9 @@ export default function WalkaroundLand() {
           longitude: 80.0607,
           latitudeDelta: 5,
           longitudeDelta: 5,
-        }} //initial region
+        }} 
       >
-        {/** Draw polyline */}
+ 
         {drawPolyline && pathCoordinates.length > 0 && (
           <>
             <Polyline
@@ -463,7 +457,7 @@ export default function WalkaroundLand() {
             )}
           </>
         )}
-        {/** Draw markers */}
+      
         {resizingMode &&
           pathCoordinates.map((coordinate, index) => (
             <Marker

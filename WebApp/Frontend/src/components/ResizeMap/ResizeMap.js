@@ -117,7 +117,7 @@ const ResizeMapScreen = () => {
     if (mapContainerRef.current) {
       const map = mapRef.current.state.map;
 
-      // Hide UI elements
+
       map.setOptions({
         disableDefaultUI: true,
         zoomControl: false,
@@ -125,7 +125,6 @@ const ResizeMapScreen = () => {
         fullscreenControl: false,
       });
 
-      // Wait for the next render cycle
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       const canvas = await html2canvas(mapContainerRef.current, {
@@ -140,7 +139,7 @@ const ResizeMapScreen = () => {
         },
       });
 
-      // Restore UI elements
+  
       map.setOptions({
         disableDefaultUI: false,
         zoomControl: true,

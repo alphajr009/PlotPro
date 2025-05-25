@@ -469,7 +469,7 @@ export default function PointAddingWeb() {
         })),
       };
 
-      // Make the API call
+
       const response = await AxiosInstance.post(
         "/api/auth/mapTemplate/saveTemplate",
         templateData
@@ -493,7 +493,6 @@ export default function PointAddingWeb() {
       if (mapRef.current && mapRef.current.state.map) {
         const map = mapRef.current.state.map;
 
-        // Hide UI elements
         map.setOptions({
           disableDefaultUI: true,
           zoomControl: false,
@@ -520,20 +519,17 @@ export default function PointAddingWeb() {
         const areaPerches = areaMeters / 25.29285264;
         const perimeterKilometers = perimeterMeters / 1000;
 
-        // Update calculated data
         setCalculatedData((prevData) => ({
           ...prevData,
           area: `${areaPerches.toFixed(2)} perches`,
           perimeter: `${perimeterKilometers.toFixed(2)} km`,
         }));
 
-        // Show capturing alert
         message.loading({
           content: "Capturing map image...",
           key: "imgCapture",
         });
 
-        // Wait for the next render cycle to ensure the polygon is drawn
         setTimeout(() => {
           const uploadToImgbb = async (imageBlob) => {
             const apiKey = "074328837193dc603f419619c5517209";
@@ -557,7 +553,6 @@ export default function PointAddingWeb() {
             }
           };
 
-          // Capture the map-outer-container
           const mapContainer = document.querySelector(".map-outer-container");
 
           html2canvas(mapContainer, {
@@ -575,10 +570,8 @@ export default function PointAddingWeb() {
               canvas.toBlob(
                 async (blob) => {
                   try {
-                    // Compress the image before uploading
                     const compressedBlob = await compressImage(blob, 0.7);
 
-                    // Upload to imgbb
                     const imageUrl = await uploadToImgbb(compressedBlob);
                     console.log("Uploaded image URL:", imageUrl);
 
@@ -587,7 +580,6 @@ export default function PointAddingWeb() {
                       screenshot: imageUrl,
                     }));
 
-                    // Show success message
                     message.success({
                       content: "Map image captured successfully!",
                       key: "imgCapture",
@@ -601,7 +593,6 @@ export default function PointAddingWeb() {
                     );
                     setIsImageCaptureComplete(true);
                   } finally {
-                    // Restore UI elements
                     map.setOptions({
                       disableDefaultUI: false,
                       zoomControl: true,
@@ -663,8 +654,8 @@ export default function PointAddingWeb() {
       backgroundColor: "rgba(0, 0, 0, 0.4)",
       padding: "10px",
       borderRadius: "10px",
-      width: isPolygonComplete ? "270px" : "360px", // Adjust these values as needed
-      transition: "width 0.3s ease", // Add smooth transition
+      width: isPolygonComplete ? "270px" : "360px",
+      transition: "width 0.3s ease", 
     },
     button: {
       padding: "8px 16px",
