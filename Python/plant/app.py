@@ -24,7 +24,7 @@ def analyze_text():
     if not crops:
         return jsonify({"error": "Crops input is required"}), 400
 
-    # Define the prompt to strictly enforce JSON response without descriptions
+    
     prompt = f"""
     You are an expert in agricultural farming. Return ONLY the following JSON format with NO extra text or explanations:
 
@@ -63,14 +63,14 @@ def analyze_text():
        
         print("Raw GPT Response:\n", response_text)
 
-        # Use regex to extract valid JSON block if GPT returns extra text
+      
         json_match = re.search(r"\{.*\}", response_text, re.DOTALL)
         if json_match:
-            response_text = json_match.group(0)  # Extract valid JSON part
+            response_text = json_match.group(0)  
 
-        # Parse JSON safely
+        
         try:
-            response_json = json.loads(response_text)  # Convert string to JSON
+            response_json = json.loads(response_text)  
             return jsonify(response_json)
         except json.JSONDecodeError:
             return (
