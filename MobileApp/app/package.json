@@ -27,6 +27,7 @@
     "expo-print": "~12.4.2",
     "expo-sharing": "~11.5.0",
     "expo-task-manager": "~11.3.0",
+    "FieldMaster": "file:",
     "metro": "^0.80.9",
     "react": "18.2.0",
     "react-native": "0.72.10",

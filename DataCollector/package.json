@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "datacollector": "file:",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.3",
@@ -8,7 +9,6 @@
   "name": "datacollector",
   "version": "1.0.0",
   "main": "db.js",
-  "devDependencies": {},
   "scripts": {
     "start": "nodemon server.js"
   },
