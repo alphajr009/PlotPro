@@ -109,7 +109,6 @@ const EditTemplate = ({ route, navigation }) => {
             }}
           />
 
-          {/* info_block */}
           <View style={styles.infoBlock}>
             <View style={styles.rowView}>
               <View>
@@ -136,7 +135,7 @@ const EditTemplate = ({ route, navigation }) => {
               </View>
             </View>
           </View>
-          {/* input fields */}
+    
           <View style={styles.inputBlock}>
             <Text stye={styles.text02Styling}>Measure Name :</Text>
             <TextInput
@@ -157,7 +156,7 @@ const EditTemplate = ({ route, navigation }) => {
               style={styles.textInput02}
             />
           </View>
-          {/* Description block */}
+    
           <View style={styles.descriptionBlock}>
             <Text style={styles.text01Styling}>Description</Text>
             <View style={styles.subTextOuter}>

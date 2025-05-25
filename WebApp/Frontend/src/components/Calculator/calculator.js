@@ -4,20 +4,20 @@ import { SiZalando } from "react-icons/si";
 import { BsBoundingBox } from "react-icons/bs";
 import Select from "react-select";
 import { styles } from "./calculatorStyles.js";
-import CalculatorSelect from "./calculatorSelect"; // Import CalculatorSelect component
+import CalculatorSelect from "./calculatorSelect"; 
 import { message } from "antd";
 const convertAreaToSqMeters = (area, unit) => {
     const conversionRates = {
-        "Acres": 4046.86,  // 1 Acre = 4046.86 sq meters
-        "Perch": 25.29,  // 1 Perch = 25.29 sq meters
-        "m²": 1            // 1 sq meter = 1 sq meter
+        "Acres": 4046.86,  
+        "Perch": 25.29, 
+        "m²": 1            
     };
 
     return area * (conversionRates[unit] || 1);
 };
 
 export default function Calculator({ onBackToSidebar }) {
-    // State hooks for managing input values and selected units
+   
     const [perimeter, setPerimeter] = useState("");
     const [area, setArea] = useState("");
     const [AreaUnitselectedValue, setAreaUnitselectedValue] = useState(null);
@@ -27,19 +27,18 @@ export default function Calculator({ onBackToSidebar }) {
     const [currentPage, setCurrentPage] = useState(null);
     const [animatePage, setAnimatePage] = useState(false);
 
-    // Handler to ensure only numeric input for area
+  
     const handleAreaChange = (event) => {
-        const value = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+        const value = event.target.value.replace(/\D/g, ''); 
         setArea(value);
     };
 
-    // Handler to ensure only numeric input for perimeter
+   
     const handlePerimeterChange = (event) => {
-        const value = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+        const value = event.target.value.replace(/\D/g, ''); 
         setPerimeter(value);
     };
 
-    // Handlers for select dropdowns
     const handleAreaUnitChange = (selectedOption) => {
         setAreaUnitselectedValue1(selectedOption);
         setAreaUnitselectedValue(selectedOption.value);
@@ -50,22 +49,22 @@ export default function Calculator({ onBackToSidebar }) {
         setPerimeterUniteSelectedValue(selectedOption.value);
     };
 
-    // Handler for calculate button click
+
     const handleCalculate = async (e) => {
         e.preventDefault();
 
         try {
-            // Check for missing inputs
+         
             if (!area.trim() || !perimeter.trim() || !AreaUnitselectedValue || !PerimeterUnitselectedValue) {
                 message.error("Please fill in all fields");
                 return;
             }
 
-            // Check for non-numeric values in area and perimeter
+       
             const areaNumeric = parseFloat(area);
             const perimeterNumeric = parseFloat(perimeter);
            
-            const regex = /^\d+(\.\d+)?$/; // allow float and decimal numbers
+            const regex = /^\d+(\.\d+)?$/; 
             if (!regex.test(area)) {
                 message.error("Please enter a valid numeric value for area");
                 return;
@@ -76,24 +75,20 @@ export default function Calculator({ onBackToSidebar }) {
                 return;
             }
 
-            // Convert area to square meters
             const areaInSqMeters = convertAreaToSqMeters(areaNumeric, AreaUnitselectedValue);
 
-            // Navigate to calculatorSelect page
             setCurrentPage("calculatorSelect");
             setAnimatePage(true);
 
             const requestData = { area: areaInSqMeters, perimeter: perimeterNumeric };
             console.log("Request Data:", requestData);
 
-            // Here you can send the request to the backend if needed
         } catch (error) {
             console.error("Error:", error.message);
             alert("Error: " + error.message);
         }
     };
 
-    // Handler for back button click to navigate back to the main page
     const handleBackClick = () => {
         setAnimatePage(false);
         setTimeout(() => {
@@ -130,9 +125,9 @@ export default function Calculator({ onBackToSidebar }) {
                                     style={styles.box3input}
                                     placeholder="25"
                                     value={area}
-                                    onChange={handleAreaChange} // Validate numeric input for area
-                                    inputMode="numeric" // Mobile device numeric keypad
-                                    pattern="[0-9]*" // HTML5 pattern for numeric values
+                                    onChange={handleAreaChange} 
+                                    inputMode="numeric" 
+                                    pattern="[0-9]*" 
                                 />
                                 <Select
                                     placeholder="Acres"
@@ -175,9 +170,9 @@ export default function Calculator({ onBackToSidebar }) {
                                     style={styles.box3input}
                                     placeholder="25"
                                     value={perimeter}
-                                    onChange={handlePerimeterChange} // Validate numeric input for perimeter
-                                    inputMode="numeric" // Mobile device numeric keypad
-                                    pattern="[0-9]*" // HTML5 pattern for numeric values
+                                    onChange={handlePerimeterChange} 
+                                    inputMode="numeric" 
+                                    pattern="[0-9]*" 
                                 />
                                 <Select
                                     placeholder="m"

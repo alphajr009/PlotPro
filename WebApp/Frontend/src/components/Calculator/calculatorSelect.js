@@ -11,9 +11,9 @@ import { Button,} from "antd";
 
 const convertAreaToSqMeters = (area, unit) => {
   const conversionRates = {
-    Acres: 4046.86, // 1 Acre = 4046.86 sq meters
-    Perch: 25.29, // 1 Perch = 25.29 sq meters
-    "m²": 1, // 1 sq meter = 1 sq meter
+    Acres: 4046.86, 
+    Perch: 25.29, 
+    "m²": 1,
   };
 
   return area * (conversionRates[unit] || 1);
@@ -26,7 +26,7 @@ export default function CalculatorSelect({
   PerimeterUnitselectedValue,
   AreaUnitselectedValue,
 }) {
-  // For plantation
+  
   const [currentPage, setCurrentPage] = useState(null);
   const [animatePage, setAnimatePage] = useState(false);
   const [Perimeter, setPerimeter] = useState(0);
@@ -52,14 +52,13 @@ export default function CalculatorSelect({
     setAnimatePage(true);
   };
 
-  // Convert area to square meters
+  
   const areaInSqMeters = convertAreaToSqMeters(
     parseFloat(area),
     AreaUnitselectedValue
   );
 
-  // UI
-  return (
+    return (
     <div>
       {!currentPage && (
         <div style={styles.content}>
@@ -145,7 +144,7 @@ export default function CalculatorSelect({
         {currentPage === "PlantationManul" && (
           <PlantationManul
             onBackToSidebar={handleBackClick}
-            area={areaInSqMeters} // Use converted area in sq meters
+            area={areaInSqMeters} 
             perimeter={perimeter}
             PerimeterUnitselectedValue={PerimeterUnitselectedValue}
             AreaUnitselectedValue="m²"

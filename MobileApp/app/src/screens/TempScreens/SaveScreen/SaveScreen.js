@@ -83,7 +83,6 @@ export function SaveScreen({ navigation, route }) {
     getLocation();
   }, [locationPoints]);
 
-  /* this function is used to save the data */
   const onSaveButtonPress = () => {
     if (
       !templateName.trim() ||
@@ -97,7 +96,7 @@ export function SaveScreen({ navigation, route }) {
         "Please fill all the fields before saving.",
         [{ text: "OK" }]
       );
-      return; // Exit the function early if any field is empty
+      return;
     }
     console.log("pressed save");
     const dataItem = {
@@ -145,7 +144,7 @@ export function SaveScreen({ navigation, route }) {
         </View>
       </Appbar.Header>
 
-      {/* three inner views */}
+    
       <ScrollView>
         <View style={styles.low_outer}>
           <View style={[styles.inner_View, styles.inner_View_01]}>

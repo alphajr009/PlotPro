@@ -1,4 +1,3 @@
-/* this is the PointAddingScreen before */
 import React, { useEffect, useState, useRef } from "react";
 import { Polygon } from "react-native-maps";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -101,16 +100,16 @@ const PointAddingScreen = ({ navigation, route }) => {
     }
   };
 
-  /* the closeModal function is used to close the modal */
+
   const closeModal = () => {
     setModalVisible(false);
   };
-  /* the selectMapType function is used to select the map type */
+
   const selectMapType = (index) => {
     setMapTypeIndex(index);
     setShowDropdown(false);
   };
-  /* the focusOnCurrentLocation function is used to focus on the current location of the user */
+ 
   const focusOnCurrentLocation = () => {
     setSearchedLocation(null);
     setShowCurrentLocation((prevShowCurrentLocation) => {
@@ -122,12 +121,12 @@ const PointAddingScreen = ({ navigation, route }) => {
           latitudeDelta: 0.0005,
           longitudeDelta: 0.0005,
         });
-        setShowUserLocation(true); // Set showUserLocation to true
+        setShowUserLocation(true); 
       }
       return newShowCurrentLocation;
     });
   };
-  /* in this useEffect the current location of the user is fetched */
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -138,7 +137,7 @@ const PointAddingScreen = ({ navigation, route }) => {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
-      /* the current location is set to the MapView */
+   
       setRegion({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -150,12 +149,12 @@ const PointAddingScreen = ({ navigation, route }) => {
     })();
   }, []);
 
-  /* the handleClearPoints function is used to clear the current locationPoints */
+ 
   const handleClearPoints = () => {
     setPoints([]);
     setIsPolygonComplete(false);
   };
-  /* the handleCompleteMap function is used to complete the map */
+ 
   const handleCompleteMap = () => {
     if (points.length > 2) {
       setIsPolygonComplete(true);
@@ -163,13 +162,13 @@ const PointAddingScreen = ({ navigation, route }) => {
       alert("You need at least 3 points to complete a polygon");
     }
   };
-  /* the handleUndoLastPoint function is used to undo the last point */
+ 
   const handleUndoLastPoint = () => {
     if (points.length > 0) {
       setPoints(points.slice(0, -1));
     }
   };
-  /* the handleSaveMap function is used to save the map */
+ 
   const handleSaveMap = async () => {
     try {
       setIsSaving(true);
@@ -233,13 +232,13 @@ const PointAddingScreen = ({ navigation, route }) => {
     }
   };
 
-  /* the handleSetMapType function is used to set the map type in the react native map*/
+ 
   const handleSetMapType = (type) => {
     setMapType(type);
     setModalVisible(false);
   };
 
-  /* the handleCancel function is used to navigate to the home screen */
+  
   const handleCancel = () => {
     navigation.navigate("Home");
   };
@@ -250,7 +249,7 @@ const PointAddingScreen = ({ navigation, route }) => {
     { name: "Terrain", value: "terrain" },
   ];
 
-  /* the toggleMapType function is used to toggle the map type */
+  
   const toggleMapType = () => {
     setShowDropdown(!showDropdown);
   };
@@ -261,7 +260,7 @@ const PointAddingScreen = ({ navigation, route }) => {
     setIsFocused(false);
   };
 
-  /* the searchLocation function is used to search for a location */
+ 
   const searchLocation = async () => {
     if (searchQuery) {
       try {
@@ -273,7 +272,7 @@ const PointAddingScreen = ({ navigation, route }) => {
         const data = await response.json();
         if (data.results && data.results.length > 0) {
           const { lat, lng } = data.results[0].geometry.location;
-          setShowCurrentLocation(false); // Hide current location
+          setShowCurrentLocation(false);
           setSearchedLocation({ latitude: lat, longitude: lng });
           if (mapRef.current) {
             mapRef.current.animateToRegion({
@@ -292,7 +291,7 @@ const PointAddingScreen = ({ navigation, route }) => {
     }
   };
 
-  /* the clearSearchQuery function is used to clear the search query */
+  
   const clearSearchQuery = () => {
     setSearchQuery("");
   };
@@ -379,7 +378,7 @@ const PointAddingScreen = ({ navigation, route }) => {
               </View>
             </View>
           </Modal>
-          {/* including map view */}
+        
           <View style={{ flex: 1 }}>
             {region && (
               <View style={{ flex: 1 }}>

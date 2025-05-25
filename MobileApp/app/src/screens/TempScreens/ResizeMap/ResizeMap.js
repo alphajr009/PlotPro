@@ -87,7 +87,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
       ],
     };
     const polygonArea = area(polygon);
-    const newArea = polygonArea * 0.03954; // Convert to perches
+    const newArea = polygonArea * 0.03954; 
 
     let perimeter = 0;
     for (let i = 0; i < pointsToCalculate.length; i++) {
@@ -123,7 +123,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
     return points;
   };
 
-  //handling location and fetching template data
+  
   useEffect(() => {
     console.log("Template ID:", templateId);
     (async () => {
@@ -147,7 +147,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
           );
           console.log(response.data.locationPoints);
 
-          // Calculate the average latitude and longitude
+          
           const avgLatitude =
             response.data.locationPoints.reduce(
               (total, point) => total + point.latitude,
@@ -179,7 +179,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
     })();
   }, []);
 
-  //remove last point from the array
+
   const handleUndoLastPoint = () => {
     if (undoStack.length > 0) {
       const newUndoStack = [...undoStack];
@@ -195,7 +195,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
     }
   };
 
-  //save the updates points to the backend is a marker was moved
+
   const handleSaveMap = async () => {
     if (isMarkerMoved || undoStack.length > 0) {
       try {
@@ -236,7 +236,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
     }
   };
 
-  //update the point's coordinates when a marker is dragged to a new location
+  
   const handleMarkerDragEnd = (event, index) => {
     const newPoints = [...points];
     const originalPoints = [...newPoints];
@@ -276,7 +276,7 @@ const ResizeMapScreen = ({ navigation, route }) => {
     calculateAreaAndPerimeter(newPoints);
   };
 
-  //select a map type
+
   const handleSetMapType = (type) => {
     selectMapType(type);
     setModalVisible(false);
