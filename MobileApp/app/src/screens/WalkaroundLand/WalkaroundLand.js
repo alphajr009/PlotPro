@@ -530,7 +530,7 @@ export default function WalkaroundLand() {
             icon="resize"
             mode="contained"
             disabled={isResizeButtonDisabled}
-            style={[
+            style={[  
               styles.button,
               isResizeButtonDisabled && {
                 backgroundColor: "rgba(131, 180, 255, 0.8)",
