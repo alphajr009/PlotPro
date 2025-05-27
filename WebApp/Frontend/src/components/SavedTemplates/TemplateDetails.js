@@ -422,7 +422,7 @@ const openAutomatedModel = async (id) => {
                 <Button
                   type="primary"
                   className="action-btn"
-                  onClick={() => window.open(`http://localhost:3001/${template._id}`, "_blank")}
+                  onClick={() => window.open(`https://plot-pro-zcjm.vercel.app/${template._id}`, "_blank")}
                 >
                   NDVI Analysis
                 </Button>
