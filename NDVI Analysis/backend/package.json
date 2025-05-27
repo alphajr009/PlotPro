@@ -1,0 +1,26 @@
+{
+  "name": "ndvi-backend",
+  "version": "1.0.0",
+  "description": "NDVI image tile generator using Google Earth Engine",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "NDVI",
+    "Earth Engine",
+    "Express",
+    "GeoJSON"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@google/earthengine": "^1.5.15",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

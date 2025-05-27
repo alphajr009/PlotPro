@@ -418,6 +418,16 @@ const openAutomatedModel = async (id) => {
                   Resize Map
                 </Button>
               </div>
+              <div className="button-container">
+                <Button
+                  type="primary"
+                  className="action-btn"
+                  onClick={() => window.open(`http://localhost:3001/${template._id}`, "_blank")}
+                >
+                  NDVI Analysis
+                </Button>
+              </div>
+
               <br />
               <h6 >Manual</h6>
               <br />

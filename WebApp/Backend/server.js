@@ -43,7 +43,7 @@ app.use('/api/plantation', plantationRoute);
 app.use('/api/fertilizer', fertilizerRoute);
 app.use('/api/fence', fenceRoute);
 app.use('/api/clearLand', clearLandRoute);
-app.use('/api/auth/mapTemplate', MapTemplateRoute);
+app.use('/api/mapTemplate', MapTemplateRoute);
 app.use('/api/auth/inputControl', InputControlRoute);
 
 // Add this route to show the server is running
