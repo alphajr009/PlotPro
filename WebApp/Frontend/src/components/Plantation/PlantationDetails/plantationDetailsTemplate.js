@@ -72,7 +72,7 @@ export const getPlantationDetailsHtml = (PlantDensity, numberOfPlants, textPlant
   <body>
       <div class="container">
           <div class="logo-container">
-              <h1 class="logo-text">Field Master</h1>
+              <h1 class="logo-text">PlotPro</h1>
           </div>
           <h2 class="description-text1">Description</h2>
           <div class="description-text">
