@@ -20,7 +20,7 @@ import { Button, Modal, InputNumber, Table, Spin, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 
 
-const BASE_URL_API = "https://f143-212-104-231-121.ngrok-free.app";
+const BASE_URL_API = "https://2148-212-104-229-130.ngrok-free.app";
 
 
 const TemplateDetails = ({
