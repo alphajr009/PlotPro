@@ -10,16 +10,16 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from flask_cors import CORS
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend
+CORS(app)  # Enable CORS for frontend requests
 
 # Initialize OpenAI Client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Analyze image and classify land types
+# Function to analyze the image
 def analyze_image(image_url):
     try:
         response = requests.get(image_url, timeout=10)
@@ -29,25 +29,21 @@ def analyze_image(image_url):
         image = Image.open(BytesIO(response.content)).convert("RGB")
         image_np = np.array(image)
 
-        # Define RGB color ranges
+        # Define color ranges for classification
         cleared_land_min = np.array([40, 30, 40])
         cleared_land_max = np.array([120, 100, 110])
+
         tree_land_min = np.array([10, 30, 30])
         tree_land_max = np.array([80, 110, 130])
 
         # Create masks
-        cleared_mask = np.all(
-            (cleared_land_min <= image_np) & (image_np <= cleared_land_max), axis=-1
-        )
-        tree_mask = np.all(
-            (tree_land_min <= image_np) & (image_np <= tree_land_max), axis=-1
-        )
+        cleared_mask = np.all((cleared_land_min <= image_np) & (image_np <= cleared_land_max), axis=-1)
+        tree_mask = np.all((tree_land_min <= image_np) & (image_np <= tree_land_max), axis=-1)
 
-        total_pixels = cleared_mask.size
         cleared_land_count = np.sum(cleared_mask)
         tree_land_count = np.sum(tree_mask)
-        total_land_count = cleared_land_count + tree_land_count
 
+        total_land_count = cleared_land_count + tree_land_count
         if total_land_count == 0:
             return 0.0, 0.0, "No land detected in the image."
 
@@ -59,7 +55,7 @@ def analyze_image(image_url):
     except Exception as e:
         return None, None, str(e)
 
-# Generate GPT-based work plan
+# Function to generate work plan using GPT
 def generate_work_plan(tree_land_area, number_of_days):
     try:
         prompt = f"""
@@ -92,7 +88,7 @@ def generate_work_plan(tree_land_area, number_of_days):
             "Feasibility_Status": "Feasible"
         }}
 
-        Ensure the response contains **ONLY** the valid JSON output, without any extra explanation.
+        Ensure the response contains *ONLY* the valid JSON output, without any extra explanation.
         """
 
         chat_completion = client.chat.completions.create(
@@ -105,6 +101,7 @@ def generate_work_plan(tree_land_area, number_of_days):
         )
 
         response_text = chat_completion.choices[0].message.content.strip()
+
         json_match = re.search(r"\{.*\}", response_text, re.DOTALL)
         if json_match:
             response_text = json_match.group(0)
@@ -117,8 +114,8 @@ def generate_work_plan(tree_land_area, number_of_days):
     except Exception as e:
         return {"error": f"Failed to generate work plan: {str(e)}"}
 
-# API route
-@app.route("/api/analyze_land", methods=["POST"])
+# Route to handle POST image + area input
+@app.route("/analyze_land", methods=["POST"])
 def analyze_land():
     try:
         data = request.json
@@ -146,6 +143,5 @@ def analyze_land():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Required for Vercel to use this as a serverless handler
-def handler(environ, start_response):
-    return app(environ, start_response)
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5001)

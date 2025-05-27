@@ -14,3 +14,5 @@ MobileApp/node_modules/
 
 WebApp/Backend/node_modules/
 WebApp/Frontend/node_modules/
+
+API_Series/backend/.env
