@@ -34,7 +34,7 @@ function MapView() {
 
     const fetchTemplate = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/mapTemplate/getOneTemplate/${templateId}`);
+        const res = await axios.get(`https://plot-pro.vercel.app/api/mapTemplateNDVI/getOneTemplate/${templateId}`);
         setLocationPoints(res.data.locationPoints);
       } catch (err) {
         console.error("❌ Failed to fetch template:", err);
@@ -49,7 +49,7 @@ function MapView() {
 
     const fetchTile = async () => {
       try {
-        const res = await axios.post('http://localhost:5005/api/ndvi/tile-url', {
+        const res = await axios.post('https://9871-52-157-243-73.ngrok-free.app/api/ndvi/tile-url', {
           locationPoints,
           startDate: dateRange.startDate.format('YYYY-MM-DD'),
           endDate: dateRange.endDate.format('YYYY-MM-DD'),
