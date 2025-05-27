@@ -34,7 +34,7 @@ function MapView() {
 
     const fetchTemplate = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/mapTemplateNDVI/getOneTemplate/${templateId}`);
+        const res = await axios.get(`https://plot-pro.vercel.app/api/mapTemplateNDVI/getOneTemplate/${templateId}`);
         setLocationPoints(res.data.locationPoints);
       } catch (err) {
         console.error("❌ Failed to fetch template:", err);
