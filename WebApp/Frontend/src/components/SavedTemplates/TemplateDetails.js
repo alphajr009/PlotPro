@@ -19,6 +19,10 @@ import AxiosInstance from "../../AxiosInstance";
 import { Button, Modal, InputNumber, Table, Spin, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 
+
+const BASE_URL_API = "https://f143-212-104-231-121.ngrok-free.app";
+
+
 const TemplateDetails = ({
   onBackToSidebar,
   template,
@@ -159,7 +163,7 @@ const handleAnalyzeSoil = async () => {
     });
 
     const response = await axios.post(
-      "http://127.0.0.1:5003/analyze-image",
+     `${BASE_URL_API}/api3/analyze-image`,
       {
         image_url: uploadedImageUrl,
         latitude: latitude,
@@ -242,7 +246,7 @@ const openAutomatedModel = async (id) => {
 
     try {
         const response = await axios.post(
-            "http://127.0.0.1:5002/analyze-text",
+            `${BASE_URL_API}/api2/analyze-text`,
             { crops: selectedCrop },
             { headers: { "Content-Type": "application/json" } }
         );
@@ -270,7 +274,7 @@ const openAutomatedModel = async (id) => {
   
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5001/analyze_land",
+        `${BASE_URL_API}/api1/analyze_land`,
         {
           numberOfDays: clearLandDays,
           imageUrl: template.imageUrl,
