@@ -1,0 +1,7 @@
+Flask
+flask-cors
+openai
+python-dotenv
+numpy
+pillow
+requests

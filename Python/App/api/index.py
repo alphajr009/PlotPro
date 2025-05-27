@@ -5,40 +5,37 @@ import requests
 from io import BytesIO
 import os
 import json
-import re  # Regex to extract JSON from GPT response
+import re
 from openai import OpenAI
 from dotenv import load_dotenv
-from flask_cors import CORS  # Import CORS for frontend API requests
+from flask_cors import CORS
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend requests
+CORS(app)  # Enable CORS for frontend
 
 # Initialize OpenAI Client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-
-# Function to analyze the image
+# Analyze image and classify land types
 def analyze_image(image_url):
     try:
         response = requests.get(image_url, timeout=10)
         if response.status_code != 200:
             return None, None, "Failed to retrieve image from URL."
 
-        # Open image from response content
         image = Image.open(BytesIO(response.content)).convert("RGB")
         image_np = np.array(image)
 
-        # Define color ranges for classification
+        # Define RGB color ranges
         cleared_land_min = np.array([40, 30, 40])
         cleared_land_max = np.array([120, 100, 110])
-
         tree_land_min = np.array([10, 30, 30])
         tree_land_max = np.array([80, 110, 130])
 
-        # Create masks for classification
+        # Create masks
         cleared_mask = np.all(
             (cleared_land_min <= image_np) & (image_np <= cleared_land_max), axis=-1
         )
@@ -46,17 +43,14 @@ def analyze_image(image_url):
             (tree_land_min <= image_np) & (image_np <= tree_land_max), axis=-1
         )
 
-        # Count pixels for each category
         total_pixels = cleared_mask.size
         cleared_land_count = np.sum(cleared_mask)
         tree_land_count = np.sum(tree_mask)
-
-        # Ensure total land calculation is valid
         total_land_count = cleared_land_count + tree_land_count
+
         if total_land_count == 0:
             return 0.0, 0.0, "No land detected in the image."
 
-        # Calculate percentage
         cleared_percentage = (cleared_land_count / total_land_count) * 100
         tree_percentage = (tree_land_count / total_land_count) * 100
 
@@ -65,8 +59,7 @@ def analyze_image(image_url):
     except Exception as e:
         return None, None, str(e)
 
-
-# Function to generate work plan using GPT
+# Generate GPT-based work plan
 def generate_work_plan(tree_land_area, number_of_days):
     try:
         prompt = f"""
@@ -111,32 +104,23 @@ def generate_work_plan(tree_land_area, number_of_days):
             ],
         )
 
-        # Extract GPT's response
         response_text = chat_completion.choices[0].message.content.strip()
-
-        # Use regex to extract valid JSON block if GPT returns extra text
         json_match = re.search(r"\{.*\}", response_text, re.DOTALL)
         if json_match:
-            response_text = json_match.group(0)  # Extract valid JSON part
+            response_text = json_match.group(0)
 
-        # Safely parse JSON
         try:
-            work_plan_json = json.loads(response_text)  # Convert string to JSON
-            return work_plan_json
+            return json.loads(response_text)
         except json.JSONDecodeError:
-            return {
-                "error": "GPT returned invalid JSON. Please check the response format."
-            }
+            return {"error": "GPT returned invalid JSON. Please check the response format."}
 
     except Exception as e:
         return {"error": f"Failed to generate work plan: {str(e)}"}
 
-
-# API Route: Accepts POST request with JSON input
-@app.route("/analyze_land", methods=["POST"])
+# API route
+@app.route("/api/analyze_land", methods=["POST"])
 def analyze_land():
     try:
-        # Parse request data
         data = request.json
         number_of_days = data.get("numberOfDays")
         image_url = data.get("imageUrl")
@@ -145,31 +129,23 @@ def analyze_land():
         if not number_of_days or not image_url or not area:
             return jsonify({"error": "Missing required fields"}), 400
 
-        # Process image to get land percentages
         cleared_land_percentage, tree_land_percentage, error = analyze_image(image_url)
-
         if error:
             return jsonify({"error": error}), 400
 
-        # Calculate Tree Land Area
         tree_land_area = (tree_land_percentage / 100) * area
-
-        # Generate work plan using GPT
         work_plan = generate_work_plan(tree_land_area, number_of_days)
 
-        # Return JSON response
-        return jsonify(
-            {
-                "Cleared_Land_Percentage": cleared_land_percentage,
-                "Tree_Land_Percentage": tree_land_percentage,
-                "Tree_Land_Area": round(tree_land_area, 2),
-                "Work_Plan": work_plan,
-            }
-        )
+        return jsonify({
+            "Cleared_Land_Percentage": cleared_land_percentage,
+            "Tree_Land_Percentage": tree_land_percentage,
+            "Tree_Land_Area": round(tree_land_area, 2),
+            "Work_Plan": work_plan,
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001)
+# Required for Vercel to use this as a serverless handler
+def handler(environ, start_response):
+    return app(environ, start_response)
