@@ -20,7 +20,7 @@ import { Button, Modal, InputNumber, Table, Spin, Flex } from "antd";
 import { useNavigate } from "react-router-dom";
 
 
-const BASE_URL_API = "https://2148-212-104-229-130.ngrok-free.app";
+const BASE_URL_API = "https://f7b9-212-104-231-169.ngrok-free.app";
 
 
 const TemplateDetails = ({
@@ -34,6 +34,14 @@ const TemplateDetails = ({
   const navigate = useNavigate();
 
   const [clearLandDays, setClearLandDays] = useState(null);
+
+  const [isModalVisible4, setIsModalVisible4] = useState(false);
+
+  const openDoubleValuesModal = () => {
+  setIsModalVisible4(true);
+};
+
+
 
   const handleEdit = (e) => {
     e.stopPropagation();
@@ -836,12 +844,40 @@ const openAutomatedModel = async (id) => {
                 ))}
             </ul>
 
+            <Button type="primary" onClick={openDoubleValuesModal}>
+  View Double Values
+</Button>
+
+
             <Flex justify="end">
                 <Button onClick={() => setIsModalVisible3(false)}>Close</Button>
             </Flex>
         </Flex>
     )}
 </Modal>
+
+<Modal
+  title="Doubled Values of Rainfall & Humidity"
+  open={isModalVisible4}
+  onCancel={() => setIsModalVisible4(false)}
+  footer={null}
+  width={500}
+>
+  {soilAnalysis ? (
+    <Flex vertical gap={15}>
+      <h3>📊 Doubled Values</h3>
+      <p><strong>🌧️ Rainfall x2:</strong> {(parseFloat(soilAnalysis.average_rainfall) * 2).toFixed(2)}</p>
+<p><strong>💦 Humidity x2:</strong> {(parseFloat(soilAnalysis.average_humidity) * 2).toFixed(2)}</p>
+
+      <Flex justify="end">
+        <Button onClick={() => setIsModalVisible4(false)}>Close</Button>
+      </Flex>
+    </Flex>
+  ) : (
+    <p>No data available.</p>
+  )}
+</Modal>
+
 
 
 
