@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Input, Select, message } from "antd";
+import axios from "axios";
 import { CloseOutlined } from "@ant-design/icons";
 const { Option } = Select;
+
+
+
 
 const PlantationSetupModal = ({
   visible,
@@ -306,12 +310,48 @@ const PlantationSetupModal = ({
         }}
       >
         <p style={{ fontSize: "14px", marginLeft: "10px" }}>Plant Type</p>
-        <Input
-          placeholder="Plant Type"
-          value={plantType}
-          onChange={(e) => setPlantType(e.target.value)}
-          style={{ width: "65%" }}
-        />
+<div style={{ display: "flex", width: "65%", gap: "6px" }}>
+  <Input
+    placeholder="Plant Type"
+    value={plantType}
+    onChange={(e) => setPlantType(e.target.value)}
+    style={{ width: "100%" }}
+  />
+  <Button
+    type="primary"
+    style={{ whiteSpace: "nowrap", padding: "0 8px" }}
+    onClick={async () => {
+      if (!plantType) {
+        message.warning("Please enter a plant type first.");
+        return;
+      }
+
+      try {
+        const response = await axios.post("http://127.0.0.1:5006/plant-info/", {
+          Plant: plantType,
+        });
+
+        const spacing = response.data.spacing_recommendation;
+
+        if (spacing?.plant_spacing && spacing?.row_spacing) {
+          setPlantSpacing(spacing.plant_spacing.toString());
+          setRowSpacing(spacing.row_spacing.toString());
+          setPlantSpacingUnit("cm");
+          setRowSpacingUnit("cm");
+          message.success("Recommended spacing applied.");
+        } else {
+          message.warning("No valid spacing found for this plant.");
+        }
+      } catch (error) {
+        console.error("❌ Error fetching spacing info:", error);
+        message.error("Failed to load recommended spacing.");
+      }
+    }}
+  >
+    Recommend
+  </Button>
+</div>
+
       </div>
       <div
         style={{
