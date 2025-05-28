@@ -6,7 +6,8 @@ import { BsBoundingBox } from "react-icons/bs";
 import { PiSquareDuotone } from "react-icons/pi";
 import { styles } from "./plantationStyles.js";
 import Select from "react-select";
-import { message, Button } from "antd";
+import { message, Button , Spin } from "antd";
+import axios from "axios";
 import PlantationDetails from "../PlantationDetails/plantationDetails";
 import AxiosInstance from "../../../AxiosInstance";
 import TemplateDetails from "../../SavedTemplates/TemplateDetails.js";
@@ -34,6 +35,9 @@ export default function Plantation({
   const [plants, setPlants] = useState([]);
   const [textPlant, setTextPlant] = useState(null);
   const [editMode,setEditMode]=useState(false);
+
+  const [loadingSpacing, setLoadingSpacing] = useState(false);
+
   
   useEffect(() => {
     fetchPlants();
@@ -198,17 +202,54 @@ export default function Plantation({
               </div>
             </div>
             <div style={styles.box2Property2}>
-              <Select
-                style={{ width: "120%" }}
-                placeholder="Select a plant"
-                value={textPlant}
-                onChange={(selectedOption) => setTextPlant(selectedOption)}
-                options={plants.map((plant) => ({
-                  value: plant.Name,
-                  label: plant.Name,
-                }))}
-              />
+<div style={styles.box2Property2}>
+  <Spin spinning={loadingSpacing} size="small">
+    <Select
+      style={{ width: "120%" }}
+      placeholder="Select a plant"
+      value={textPlant}
+      onChange={async (selectedOption) => {
+        setTextPlant(selectedOption);
+        if (selectedOption?.value) {
+          setLoadingSpacing(true); // Start loading
+          try {
+            const response = await axios.post("http://127.0.0.1:5006/plant-info/", {
+              Plant: selectedOption.value,
+            });
+
+            const spacing = response.data.spacing_recommendation;
+
+            if (spacing?.plant_spacing && spacing?.row_spacing) {
+              settextplantspace(spacing.plant_spacing.toString());
+              settextRowspace(spacing.row_spacing.toString());
+              setPlantSpaceUnitselectedValue("cm");
+              setPlantSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+              setRowSpaceUnitselectedValue("cm");
+              setRowSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+              message.success("Recommended spacing applied.");
+            } else {
+              message.warning("No valid spacing found for this plant.");
+            }
+          } catch (error) {
+            console.error("❌ Error fetching spacing info:", error);
+            message.error("Failed to fetch recommended spacing.");
+          } finally {
+            // Delay 6 seconds to keep spinner visible
+            setTimeout(() => setLoadingSpacing(false), 3000);
+          }
+        }
+      }}
+      options={plants.map((plant) => ({
+        value: plant.Name,
+        label: plant.Name,
+      }))}
+    />
+  </Spin>
+</div>
+
             </div>
+
+
           </div>
           {/* box 3 */}
           <div style={styles.box3}>

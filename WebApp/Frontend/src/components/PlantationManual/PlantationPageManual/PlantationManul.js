@@ -7,6 +7,7 @@ import { PiSquareDuotone } from "react-icons/pi";
 import { styles } from "./PlantationManualStyles";
 import Select from "react-select";
 import AxiosInstance from "../../../AxiosInstance";
+import axios from "axios";
 import PlantationDetailsManual from "../PlantationDetailsManual/PlantationDetailsManual";
 import { message } from "antd";
 export default function Plantation({
@@ -226,16 +227,88 @@ export default function Plantation({
               </div>
             </div>
             <div style={styles.box2Property2}>
-              <Select
-                style={{ width: "120%" }}
-                placeholder="Select a plant"
-                value={textPlant}
-                onChange={(selectedOption) => setTextPlant(selectedOption)}
-                options={plants.map((plant) => ({
-                  value: plant.Name,
-                  label: plant.Name,
-                }))}
-              />
+<Select
+  style={{ width: "120%" }}
+  placeholder="Select a plant"
+  value={textPlant}
+  onChange={async (selectedOption) => {
+    setTextPlant(selectedOption);
+
+    if (selectedOption?.value) {
+      try {
+        const response = await axios.post("http://127.0.0.1:5006/plant-info/", {
+          Plant: selectedOption.value,
+        });
+
+        const spacing = response.data.spacing_recommendation;
+
+        if (spacing && spacing.plant_spacing && spacing.row_spacing) {
+          settextplantspace(spacing.plant_spacing.toString());
+          settextRowspace(spacing.row_spacing.toString());
+          setPlantSpaceUnitselectedValue("cm");
+          setPlantSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+          setRowSpaceUnitselectedValue("cm");
+          setRowSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+        } else {
+          message.warning("⚠️ No valid spacing data found.");
+        }
+      } catch (error) {
+        console.error("❌ Error fetching spacing info:", error);
+        message.error("Failed to load spacing data for selected plant.");
+      }
+    }
+  }}
+  options={plants.map((plant) => ({
+    value: plant.Name,
+    label: plant.Name,
+  }))}
+/>
+
+<button
+  style={{
+    marginTop: "8px",
+    backgroundColor: "#007BFF",
+    color: "white",
+    padding: "6px 12px",
+    borderRadius: "4px",
+    border: "none",
+    cursor: "pointer",
+  }}
+  onClick={async () => {
+    if (!textPlant?.value) {
+      message.warning("Please select a plant first.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5006/plant-info/", {
+        Plant: textPlant.value,
+      });
+
+      const spacing = response.data.spacing_recommendation;
+
+      if (spacing && spacing.plant_spacing && spacing.row_spacing) {
+        settextplantspace(spacing.plant_spacing.toString());
+        settextRowspace(spacing.row_spacing.toString());
+        setPlantSpaceUnitselectedValue("cm");
+        setPlantSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+        setRowSpaceUnitselectedValue("cm");
+        setRowSpaceUnitselectedValue1({ label: "cm", value: "cm" });
+        message.success("Spacing recommendation applied.");
+      } else {
+        message.warning("⚠️ No valid spacing data found.");
+      }
+    } catch (error) {
+      console.error("❌ Error fetching spacing info:", error);
+      message.error("Failed to load spacing data for selected plant.");
+    }
+  }}
+>
+  Recommend Spacing
+</button>
+
+
+
             </div>
           </div>
           {/* box 3 */}
