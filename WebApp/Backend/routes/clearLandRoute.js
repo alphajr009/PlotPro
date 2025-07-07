@@ -177,7 +177,7 @@ router.post("/clearLandFromManualCalculator", async (req, res) => {
       area,
     } = req.body
 
-    const laborsCount = parseInt(laborCount);
+    const laborsCount = parseInt(2*(laborCount));
     const weedType = pressed;
     const plantDetails = displayValues.map((value) => {
       const [count, type] = value.split(" x ");
@@ -337,7 +337,7 @@ router.put("/clearLand/:id", async (req, res) => {
             WeedType: pressed,
             PlantDetails: displayValues,
             StoneDetails: displayValues1,
-            LaborsCOunt: laborCount,
+            LaborsCOunt: 2*(laborCount),
             WorkHoursCount: workHours,
             MachineDetails: displayValues2,
             WeedEffort: weedEffort,

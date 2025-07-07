@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from PIL import Image
-import numpy as np
+from PIL import Image # type: ignore
+import numpy as np # type: ignore
 import requests
 from io import BytesIO
 import os

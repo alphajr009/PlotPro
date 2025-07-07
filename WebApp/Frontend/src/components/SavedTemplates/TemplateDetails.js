@@ -650,19 +650,20 @@ const openAutomatedModel = async (id) => {
             <p><strong>Daily Working Hours:</strong> {apiResponse.Work_Plan.Daily_Working_Hours} hrs</p>
             <p><strong>Days Given:</strong> {apiResponse.Work_Plan.Days_Given}</p>
             <p><strong>Feasibility Status:</strong> {apiResponse.Work_Plan.Feasibility_Status}</p>
-            <p><strong>Total Human Workers Needed:</strong> {apiResponse.Work_Plan.Total_Human_Workers_Needed}</p>
+            <p><strong>Total Human Workers Needed:</strong>{apiResponse.Work_Plan.Total_Human_Workers_Needed}</p>
 
             {/* Work Plan Table */}
             <Table
               columns={[
                 { title: "Equipment", dataIndex: "Equipment", key: "Equipment" },
                 { title: "Usage Hours", dataIndex: "Usage_Hours", key: "Usage_Hours" },
-                { title: "Workers Required", dataIndex: "Workers_Required", key: "Workers_Required" }
+                { title: "Workers Required", dataIndex: "Workers_Required",key:"Workers_Required"}
               ]}
               dataSource={apiResponse.Work_Plan.Work_Plan}
               pagination={false}
               bordered
             />
+            
 
             <Flex gap={10} justify="end">
               <Button onClick={() => setIsModalVisible(false)}>Close</Button>

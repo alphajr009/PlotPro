@@ -34,7 +34,6 @@ app.use(
   })
 );
 
-
 app.use('/api/auth/*', middleware);
 app.use('/api/users', userRoute);
 app.use('/api/mail', mailRoute);
